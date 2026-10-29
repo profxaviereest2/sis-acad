@@ -1,2 +1,2 @@
 # sis-acad
-Desarrollo de régimen académico con alumnos de 7mo
+Desarrollo de régimen académico con alumnos de 7mo - modularizado por grupos.
