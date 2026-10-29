@@ -1,1 +1,663 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 29-10-2026 a las 20:19:51
+-- Versión del servidor: 10.4.32-MariaDB
+-- Versión de PHP: 8.0.30
 
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Base de datos: `db_escuela`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `asistencia`
+--
+
+CREATE TABLE `asistencia` (
+  `id_asistencia` int(11) NOT NULL,
+  `fecha` date NOT NULL,
+  `id_curso_horario` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `asistencia_detalle`
+--
+
+CREATE TABLE `asistencia_detalle` (
+  `id_detalle` int(11) NOT NULL,
+  `id_asistencia` int(11) NOT NULL,
+  `id_alumno` int(11) NOT NULL,
+  `id_estado` int(11) NOT NULL,
+  `observacion` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `carga_notas`
+--
+
+CREATE TABLE `carga_notas` (
+  `id_nota` int(11) NOT NULL,
+  `id_usuario` int(11) NOT NULL,
+  `id_materia` int(11) NOT NULL,
+  `id_tipo` int(11) NOT NULL,
+  `nota` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `curso`
+--
+
+CREATE TABLE `curso` (
+  `id_curso` int(11) NOT NULL,
+  `curso` varchar(20) NOT NULL,
+  `division` int(11) NOT NULL,
+  `turno` varchar(20) NOT NULL,
+  `id_plan` int(11) DEFAULT NULL,
+  `anio` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `curso_horario`
+--
+
+CREATE TABLE `curso_horario` (
+  `id_curso_horario` int(11) NOT NULL,
+  `id_curso` int(11) NOT NULL,
+  `id_horario` int(11) NOT NULL,
+  `id_materia` int(11) NOT NULL,
+  `id_preceptor` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `detalle_plan`
+--
+
+CREATE TABLE `detalle_plan` (
+  `id_detalle` int(11) NOT NULL,
+  `id_materia` int(11) NOT NULL,
+  `id_plan` int(11) NOT NULL,
+  `año` year(4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `estados_asistencia`
+--
+
+CREATE TABLE `estados_asistencia` (
+  `id_estado` int(11) NOT NULL,
+  `codigo` varchar(20) NOT NULL,
+  `descripcion` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `faltas`
+--
+
+CREATE TABLE `faltas` (
+  `id_faltas` int(11) NOT NULL,
+  `id_horas` int(11) NOT NULL,
+  `id_usuario` int(11) NOT NULL,
+  `id_asistencia` int(11) NOT NULL,
+  `faltas` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `horarios`
+--
+
+CREATE TABLE `horarios` (
+  `id_horario` int(11) NOT NULL,
+  `dia_semana` varchar(20) NOT NULL,
+  `turno` varchar(20) NOT NULL,
+  `hora_inicio` time NOT NULL,
+  `hora_fin` time NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `horas`
+--
+
+CREATE TABLE `horas` (
+  `id_horas` int(11) NOT NULL,
+  `id_materia` int(11) NOT NULL,
+  `id_curso` int(11) NOT NULL,
+  `dia` int(11) NOT NULL,
+  `hora` int(11) NOT NULL,
+  `dia_semana` varchar(20) DEFAULT NULL,
+  `turno` varchar(20) DEFAULT NULL,
+  `hora_inicio` time DEFAULT NULL,
+  `hora_fin` time DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `materia`
+--
+
+CREATE TABLE `materia` (
+  `id_materia` int(11) NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `id_horas` int(11) NOT NULL,
+  `especialidad` set('construcciones','informatica') NOT NULL,
+  `id_plan` int(11) DEFAULT NULL,
+  `anio_materia` int(11) DEFAULT NULL,
+  `carga_horaria_semanal` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `planes_estudio`
+--
+
+CREATE TABLE `planes_estudio` (
+  `id_plan` int(11) NOT NULL,
+  `codigo_resolucion` varchar(50) NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `anio_validez` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `plan_estudio`
+--
+
+CREATE TABLE `plan_estudio` (
+  `id_plan` int(11) NOT NULL,
+  `nombre` varchar(20) NOT NULL,
+  `id_regimen` int(11) NOT NULL,
+  `codigo_resolucion` varchar(50) DEFAULT NULL,
+  `anio_validez` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `previa`
+--
+
+CREATE TABLE `previa` (
+  `id_previa` int(11) NOT NULL,
+  `id_materia` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `regimen_evaluacion`
+--
+
+CREATE TABLE `regimen_evaluacion` (
+  `id_regimen` int(11) NOT NULL,
+  `tipo_calificacion` enum('text','int') NOT NULL,
+  `nota_minima` int(11) NOT NULL,
+  `escala_numerica` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `reporte_notas`
+--
+
+CREATE TABLE `reporte_notas` (
+  `id_reporte` int(11) NOT NULL,
+  `id_nota` int(11) NOT NULL,
+  `nota_primer_c` int(11) NOT NULL,
+  `nota_segun_c` int(11) NOT NULL,
+  `id_previa` int(11) NOT NULL,
+  `nota_inf_prim_c` int(11) NOT NULL,
+  `nota_inf_segun_c` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `rol`
+--
+
+CREATE TABLE `rol` (
+  `id_rol` int(11) NOT NULL,
+  `nombre` text NOT NULL,
+  `id_rol_root` int(11) NOT NULL,
+  `id_rol_admin` int(11) NOT NULL,
+  `id_rol_visitante` int(11) NOT NULL,
+  `id_rol_usuario` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `rol_admin`
+--
+
+CREATE TABLE `rol_admin` (
+  `id_rol_admin` int(11) NOT NULL,
+  `p_carga_alum` tinyint(1) NOT NULL DEFAULT 0,
+  `p_mod_notas` tinyint(1) NOT NULL DEFAULT 0,
+  `p_asistencias` tinyint(1) NOT NULL DEFAULT 0,
+  `p_asig_mate` tinyint(1) NOT NULL DEFAULT 0,
+  `p_alta_alum` tinyint(1) NOT NULL DEFAULT 0,
+  `p_baja_alum` tinyint(1) NOT NULL DEFAULT 0,
+  `p_alta_baja_prof` tinyint(1) NOT NULL DEFAULT 0,
+  `p_aprobar_exam` tinyint(1) NOT NULL DEFAULT 0,
+  `p_asignar_rol_permiso` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `rol_root`
+--
+
+CREATE TABLE `rol_root` (
+  `id_rol_root` int(11) NOT NULL,
+  `p_carga_alum` tinyint(1) NOT NULL DEFAULT 0,
+  `p_mod_notas` tinyint(1) NOT NULL DEFAULT 0,
+  `p_asistencias` tinyint(1) NOT NULL DEFAULT 0,
+  `p_asig_mate` tinyint(1) NOT NULL DEFAULT 0,
+  `p_alta_alum` tinyint(1) NOT NULL DEFAULT 0,
+  `p_baja_alum` tinyint(1) NOT NULL DEFAULT 0,
+  `p_alta_baja_prof` tinyint(1) NOT NULL DEFAULT 0,
+  `p_aprobar_exam` tinyint(1) NOT NULL DEFAULT 0,
+  `p_asignar_rol_permiso` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `rol_usuario`
+--
+
+CREATE TABLE `rol_usuario` (
+  `id_rol_usuario` int(11) NOT NULL,
+  `p_carga_alum` tinyint(1) NOT NULL DEFAULT 0,
+  `p_mod_notas` tinyint(1) NOT NULL DEFAULT 0,
+  `p_asistencias` tinyint(1) NOT NULL DEFAULT 0,
+  `p_asig_mate` tinyint(1) NOT NULL DEFAULT 0,
+  `p_alta_alum` tinyint(1) NOT NULL DEFAULT 0,
+  `p_baja_alum` tinyint(1) NOT NULL DEFAULT 0,
+  `p_alta_baja_prof` tinyint(1) NOT NULL DEFAULT 0,
+  `p_aprobar_exam` tinyint(1) NOT NULL DEFAULT 0,
+  `p_asignar_rol_permiso` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `rol_visitante`
+--
+
+CREATE TABLE `rol_visitante` (
+  `id_rol_visitante` int(11) NOT NULL,
+  `p_carga_alum` tinyint(1) NOT NULL DEFAULT 0,
+  `p_mod_notas` tinyint(1) NOT NULL DEFAULT 0,
+  `p_asistencias` tinyint(1) NOT NULL DEFAULT 0,
+  `p_asig_mate` tinyint(1) NOT NULL DEFAULT 0,
+  `p_alta_alum` tinyint(1) NOT NULL DEFAULT 0,
+  `p_baja_alum` tinyint(1) NOT NULL DEFAULT 0,
+  `p_alta_baja_prof` tinyint(1) NOT NULL DEFAULT 0,
+  `p_aprobar_exam` tinyint(1) NOT NULL DEFAULT 0,
+  `p_asignar_rol_permiso` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tipo_nota`
+--
+
+CREATE TABLE `tipo_nota` (
+  `id_tipo` int(11) NOT NULL,
+  `tipo` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuario`
+--
+
+CREATE TABLE `usuario` (
+  `id_usuario` int(11) NOT NULL,
+  `nombre` varchar(30) NOT NULL,
+  `apellido` varchar(30) NOT NULL,
+  `dni` int(11) NOT NULL,
+  `email` varchar(30) NOT NULL,
+  `pass` text NOT NULL,
+  `activo` tinyint(1) NOT NULL,
+  `descripcion_actividad` text NOT NULL,
+  `id_rol` int(11) DEFAULT NULL,
+  `id_curso` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuario_rol`
+--
+
+CREATE TABLE `usuario_rol` (
+  `id_usuario_rol` int(11) NOT NULL,
+  `id_usuario` int(11) NOT NULL,
+  `id_rol` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `asistencia`
+--
+ALTER TABLE `asistencia`
+  ADD UNIQUE KEY `id_asistencia` (`id_asistencia`),
+  ADD KEY `id_asistencia_2` (`id_asistencia`),
+  ADD KEY `id_asistencia_3` (`id_asistencia`);
+
+--
+-- Indices de la tabla `asistencia_detalle`
+--
+ALTER TABLE `asistencia_detalle`
+  ADD PRIMARY KEY (`id_detalle`);
+
+--
+-- Indices de la tabla `carga_notas`
+--
+ALTER TABLE `carga_notas`
+  ADD PRIMARY KEY (`id_nota`),
+  ADD KEY `id_usuario` (`id_usuario`,`id_materia`,`id_tipo`),
+  ADD KEY `id_materia` (`id_materia`),
+  ADD KEY `id_tipo` (`id_tipo`);
+
+--
+-- Indices de la tabla `curso`
+--
+ALTER TABLE `curso`
+  ADD PRIMARY KEY (`id_curso`);
+
+--
+-- Indices de la tabla `curso_horario`
+--
+ALTER TABLE `curso_horario`
+  ADD PRIMARY KEY (`id_curso_horario`);
+
+--
+-- Indices de la tabla `detalle_plan`
+--
+ALTER TABLE `detalle_plan`
+  ADD PRIMARY KEY (`id_detalle`),
+  ADD KEY `id_materia` (`id_materia`),
+  ADD KEY `id_plan` (`id_plan`);
+
+--
+-- Indices de la tabla `estados_asistencia`
+--
+ALTER TABLE `estados_asistencia`
+  ADD PRIMARY KEY (`id_estado`);
+
+--
+-- Indices de la tabla `faltas`
+--
+ALTER TABLE `faltas`
+  ADD PRIMARY KEY (`id_faltas`),
+  ADD KEY `id_horas` (`id_horas`,`id_usuario`,`id_asistencia`),
+  ADD KEY `id_usuario` (`id_usuario`),
+  ADD KEY `id_asistencia` (`id_asistencia`);
+
+--
+-- Indices de la tabla `horarios`
+--
+ALTER TABLE `horarios`
+  ADD PRIMARY KEY (`id_horario`);
+
+--
+-- Indices de la tabla `horas`
+--
+ALTER TABLE `horas`
+  ADD PRIMARY KEY (`id_horas`),
+  ADD KEY `id_materia` (`id_materia`,`id_curso`),
+  ADD KEY `id_curso` (`id_curso`);
+
+--
+-- Indices de la tabla `materia`
+--
+ALTER TABLE `materia`
+  ADD PRIMARY KEY (`id_materia`),
+  ADD KEY `id_horas` (`id_horas`);
+
+--
+-- Indices de la tabla `planes_estudio`
+--
+ALTER TABLE `planes_estudio`
+  ADD PRIMARY KEY (`id_plan`);
+
+--
+-- Indices de la tabla `plan_estudio`
+--
+ALTER TABLE `plan_estudio`
+  ADD PRIMARY KEY (`id_plan`),
+  ADD KEY `id_regimen` (`id_regimen`);
+
+--
+-- Indices de la tabla `previa`
+--
+ALTER TABLE `previa`
+  ADD PRIMARY KEY (`id_previa`),
+  ADD KEY `id_materia` (`id_materia`);
+
+--
+-- Indices de la tabla `regimen_evaluacion`
+--
+ALTER TABLE `regimen_evaluacion`
+  ADD PRIMARY KEY (`id_regimen`);
+
+--
+-- Indices de la tabla `reporte_notas`
+--
+ALTER TABLE `reporte_notas`
+  ADD PRIMARY KEY (`id_reporte`),
+  ADD KEY `id_nota` (`id_nota`,`id_previa`),
+  ADD KEY `id_previa` (`id_previa`);
+
+--
+-- Indices de la tabla `rol`
+--
+ALTER TABLE `rol`
+  ADD PRIMARY KEY (`id_rol`),
+  ADD KEY `id_rol_root` (`id_rol_root`,`id_rol_admin`,`id_rol_visitante`,`id_rol_usuario`),
+  ADD KEY `id_rol_admin` (`id_rol_admin`),
+  ADD KEY `id_rol_visitante` (`id_rol_visitante`),
+  ADD KEY `id_rol_usuario` (`id_rol_usuario`);
+
+--
+-- Indices de la tabla `rol_admin`
+--
+ALTER TABLE `rol_admin`
+  ADD PRIMARY KEY (`id_rol_admin`);
+
+--
+-- Indices de la tabla `rol_root`
+--
+ALTER TABLE `rol_root`
+  ADD PRIMARY KEY (`id_rol_root`);
+
+--
+-- Indices de la tabla `rol_usuario`
+--
+ALTER TABLE `rol_usuario`
+  ADD PRIMARY KEY (`id_rol_usuario`);
+
+--
+-- Indices de la tabla `rol_visitante`
+--
+ALTER TABLE `rol_visitante`
+  ADD PRIMARY KEY (`id_rol_visitante`);
+
+--
+-- Indices de la tabla `tipo_nota`
+--
+ALTER TABLE `tipo_nota`
+  ADD PRIMARY KEY (`id_tipo`);
+
+--
+-- Indices de la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  ADD PRIMARY KEY (`id_usuario`);
+
+--
+-- Indices de la tabla `usuario_rol`
+--
+ALTER TABLE `usuario_rol`
+  ADD PRIMARY KEY (`id_usuario_rol`),
+  ADD KEY `id_rol` (`id_rol`),
+  ADD KEY `id_usuario` (`id_usuario`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `asistencia_detalle`
+--
+ALTER TABLE `asistencia_detalle`
+  MODIFY `id_detalle` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `curso_horario`
+--
+ALTER TABLE `curso_horario`
+  MODIFY `id_curso_horario` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `estados_asistencia`
+--
+ALTER TABLE `estados_asistencia`
+  MODIFY `id_estado` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `horarios`
+--
+ALTER TABLE `horarios`
+  MODIFY `id_horario` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `planes_estudio`
+--
+ALTER TABLE `planes_estudio`
+  MODIFY `id_plan` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `carga_notas`
+--
+ALTER TABLE `carga_notas`
+  ADD CONSTRAINT `carga_notas_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`),
+  ADD CONSTRAINT `carga_notas_ibfk_2` FOREIGN KEY (`id_materia`) REFERENCES `materia` (`id_materia`),
+  ADD CONSTRAINT `carga_notas_ibfk_3` FOREIGN KEY (`id_tipo`) REFERENCES `tipo_nota` (`id_tipo`);
+
+--
+-- Filtros para la tabla `detalle_plan`
+--
+ALTER TABLE `detalle_plan`
+  ADD CONSTRAINT `detalle_plan_ibfk_1` FOREIGN KEY (`id_materia`) REFERENCES `materia` (`id_materia`),
+  ADD CONSTRAINT `detalle_plan_ibfk_2` FOREIGN KEY (`id_plan`) REFERENCES `plan_estudio` (`id_plan`);
+
+--
+-- Filtros para la tabla `faltas`
+--
+ALTER TABLE `faltas`
+  ADD CONSTRAINT `faltas_ibfk_1` FOREIGN KEY (`id_horas`) REFERENCES `horas` (`id_horas`),
+  ADD CONSTRAINT `faltas_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`),
+  ADD CONSTRAINT `faltas_ibfk_3` FOREIGN KEY (`id_asistencia`) REFERENCES `asistencia` (`id_asistencia`);
+
+--
+-- Filtros para la tabla `horas`
+--
+ALTER TABLE `horas`
+  ADD CONSTRAINT `horas_ibfk_1` FOREIGN KEY (`id_materia`) REFERENCES `materia` (`id_materia`),
+  ADD CONSTRAINT `horas_ibfk_2` FOREIGN KEY (`id_curso`) REFERENCES `curso` (`id_curso`);
+
+--
+-- Filtros para la tabla `materia`
+--
+ALTER TABLE `materia`
+  ADD CONSTRAINT `materia_ibfk_1` FOREIGN KEY (`id_horas`) REFERENCES `horas` (`id_horas`);
+
+--
+-- Filtros para la tabla `plan_estudio`
+--
+ALTER TABLE `plan_estudio`
+  ADD CONSTRAINT `plan_estudio_ibfk_1` FOREIGN KEY (`id_regimen`) REFERENCES `regimen_evaluacion` (`id_regimen`);
+
+--
+-- Filtros para la tabla `previa`
+--
+ALTER TABLE `previa`
+  ADD CONSTRAINT `previa_ibfk_1` FOREIGN KEY (`id_materia`) REFERENCES `materia` (`id_materia`);
+
+--
+-- Filtros para la tabla `reporte_notas`
+--
+ALTER TABLE `reporte_notas`
+  ADD CONSTRAINT `reporte_notas_ibfk_1` FOREIGN KEY (`id_nota`) REFERENCES `carga_notas` (`id_nota`),
+  ADD CONSTRAINT `reporte_notas_ibfk_2` FOREIGN KEY (`id_previa`) REFERENCES `previa` (`id_previa`);
+
+--
+-- Filtros para la tabla `rol`
+--
+ALTER TABLE `rol`
+  ADD CONSTRAINT `rol_ibfk_1` FOREIGN KEY (`id_rol_admin`) REFERENCES `rol_admin` (`id_rol_admin`),
+  ADD CONSTRAINT `rol_ibfk_2` FOREIGN KEY (`id_rol_root`) REFERENCES `rol_root` (`id_rol_root`),
+  ADD CONSTRAINT `rol_ibfk_3` FOREIGN KEY (`id_rol_visitante`) REFERENCES `rol_visitante` (`id_rol_visitante`),
+  ADD CONSTRAINT `rol_ibfk_4` FOREIGN KEY (`id_rol_usuario`) REFERENCES `rol_usuario` (`id_rol_usuario`);
+
+--
+-- Filtros para la tabla `usuario_rol`
+--
+ALTER TABLE `usuario_rol`
+  ADD CONSTRAINT `usuario_rol_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`),
+  ADD CONSTRAINT `usuario_rol_ibfk_2` FOREIGN KEY (`id_rol`) REFERENCES `rol` (`id_rol`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
