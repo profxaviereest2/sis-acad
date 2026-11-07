@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 07-11-2026 a las 18:39:36
+-- Tiempo de generación: 07-11-2026 a las 20:28:54
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -59,10 +59,71 @@ CREATE TABLE `carga_notas` (
   `id_usuario` int(11) NOT NULL,
   `id_materia` int(11) NOT NULL,
   `id_tipo` int(11) NOT NULL,
+  `nro_instancia` int(11) NOT NULL DEFAULT 1,
   `nota` int(11) NOT NULL,
   `activo` tinyint(1) NOT NULL,
   `fecha` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `carga_notas`
+--
+
+INSERT INTO `carga_notas` (`id_nota`, `id_usuario`, `id_materia`, `id_tipo`, `nro_instancia`, `nota`, `activo`, `fecha`) VALUES
+(1, 2, 1, 1, 1, 9, 1, '2026-11-07 18:53:31'),
+(2, 3, 1, 1, 1, 7, 1, '2026-11-07 18:08:16'),
+(3, 4, 1, 1, 1, 7, 1, '2026-11-07 18:08:16'),
+(4, 5, 1, 1, 1, 7, 1, '2026-11-07 18:08:16'),
+(5, 6, 1, 1, 1, 7, 1, '2026-11-07 18:08:16'),
+(6, 7, 1, 1, 1, 7, 1, '2026-11-07 18:08:16'),
+(7, 8, 1, 1, 1, 7, 1, '2026-11-07 18:08:16'),
+(8, 9, 1, 1, 1, 7, 1, '2026-11-07 18:08:16'),
+(9, 10, 1, 1, 1, 7, 1, '2026-11-07 18:08:16'),
+(10, 11, 1, 1, 1, 7, 1, '2026-11-07 18:08:16'),
+(11, 12, 1, 1, 1, 7, 1, '2026-11-07 18:08:16'),
+(12, 13, 1, 1, 1, 7, 1, '2026-11-07 18:08:16'),
+(13, 14, 1, 1, 1, 7, 1, '2026-11-07 18:08:16'),
+(14, 15, 1, 1, 1, 7, 1, '2026-11-07 18:08:16'),
+(15, 16, 1, 1, 1, 7, 1, '2026-11-07 18:08:16'),
+(16, 17, 1, 1, 1, 7, 1, '2026-11-07 18:08:16'),
+(17, 18, 1, 1, 1, 7, 1, '2026-11-07 18:08:16'),
+(18, 19, 1, 1, 1, 7, 1, '2026-11-07 18:08:16'),
+(19, 20, 1, 1, 1, 7, 1, '2026-11-07 18:08:16'),
+(20, 2, 1, 1, 2, 8, 1, '2026-11-07 19:11:46'),
+(21, 3, 1, 1, 2, 8, 1, '2026-11-07 19:11:46'),
+(22, 4, 1, 1, 2, 8, 1, '2026-11-07 19:11:46'),
+(23, 5, 1, 1, 2, 8, 1, '2026-11-07 19:11:46'),
+(24, 6, 1, 1, 2, 8, 1, '2026-11-07 19:11:46'),
+(25, 7, 1, 1, 2, 8, 1, '2026-11-07 19:11:46'),
+(26, 8, 1, 1, 2, 8, 1, '2026-11-07 19:11:46'),
+(27, 9, 1, 1, 2, 8, 1, '2026-11-07 19:11:46'),
+(28, 10, 1, 1, 2, 8, 1, '2026-11-07 19:11:46'),
+(29, 11, 1, 1, 2, 8, 1, '2026-11-07 19:11:46'),
+(30, 12, 1, 1, 2, 8, 1, '2026-11-07 19:11:46'),
+(31, 13, 1, 1, 2, 8, 1, '2026-11-07 19:11:46'),
+(32, 14, 1, 1, 2, 8, 1, '2026-11-07 19:11:46'),
+(33, 15, 1, 1, 2, 8, 1, '2026-11-07 19:11:46'),
+(34, 16, 1, 1, 2, 2, 1, '2026-11-07 19:11:46'),
+(35, 17, 1, 1, 2, 8, 1, '2026-11-07 19:11:46'),
+(36, 18, 1, 1, 2, 8, 1, '2026-11-07 19:11:46'),
+(37, 19, 1, 1, 2, 8, 1, '2026-11-07 19:11:46'),
+(38, 20, 1, 1, 2, 8, 1, '2026-11-07 19:11:46');
+
+--
+-- Disparadores `carga_notas`
+--
+DELIMITER $$
+CREATE TRIGGER `carga_instancia_notas` BEFORE INSERT ON `carga_notas` FOR EACH ROW BEGIN
+
+    SET NEW.nro_instancia = COALESCE(
+        (SELECT MAX(c.nro_instancia) 
+         FROM carga_notas c 
+         WHERE c.id_usuario = NEW.id_usuario 
+           AND c.id_materia = NEW.id_materia 
+           AND c.id_tipo = NEW.id_tipo), 0) + 1;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -266,6 +327,13 @@ CREATE TABLE `notas_modificadas` (
   `nota_nueva` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `notas_modificadas`
+--
+
+INSERT INTO `notas_modificadas` (`id_registro`, `id_nota`, `fecha_modificacion`, `nota_vieja`, `nota_nueva`) VALUES
+(1, 1, '2026-11-07 18:53:31', 7, 9);
+
 -- --------------------------------------------------------
 
 --
@@ -418,8 +486,15 @@ CREATE TABLE `solicitud` (
   `id_alumno` int(11) NOT NULL,
   `aprobado` tinyint(1) DEFAULT 0,
   `fecha` timestamp NOT NULL DEFAULT current_timestamp(),
-  `id_tipo` int(11) NOT NULL
+  `id_nota` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `solicitud`
+--
+
+INSERT INTO `solicitud` (`id_solicitud`, `id_usuario`, `id_alumno`, `aprobado`, `fecha`, `id_nota`) VALUES
+(1, 1, 2, 2, '2026-11-07 18:52:47', 1);
 
 -- --------------------------------------------------------
 
@@ -681,8 +756,9 @@ ALTER TABLE `rol`
 --
 ALTER TABLE `solicitud`
   ADD PRIMARY KEY (`id_solicitud`),
-  ADD KEY `id_tipo` (`id_tipo`),
-  ADD KEY `id_usuario` (`id_usuario`);
+  ADD KEY `id_usuario` (`id_usuario`),
+  ADD KEY `id_nota` (`id_nota`),
+  ADD KEY `id_nota_2` (`id_nota`);
 
 --
 -- Indices de la tabla `tipo_nota`
@@ -774,7 +850,7 @@ ALTER TABLE `plan_estudio`
 -- AUTO_INCREMENT de la tabla `solicitud`
 --
 ALTER TABLE `solicitud`
-  MODIFY `id_solicitud` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_solicitud` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `version_plan`
@@ -879,8 +955,8 @@ ALTER TABLE `previa`
 -- Filtros para la tabla `solicitud`
 --
 ALTER TABLE `solicitud`
-  ADD CONSTRAINT `solicitud_ibfk_1` FOREIGN KEY (`id_tipo`) REFERENCES `tipo_nota` (`id_tipo`),
-  ADD CONSTRAINT `solicitud_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`);
+  ADD CONSTRAINT `solicitud_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`),
+  ADD CONSTRAINT `solicitud_ibfk_3` FOREIGN KEY (`id_nota`) REFERENCES `carga_notas` (`id_nota`);
 
 --
 -- Filtros para la tabla `usuario_rol`
