@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 04-11-2026 a las 04:00:15
+-- Tiempo de generación: 07-11-2026 a las 18:39:36
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -251,6 +251,20 @@ INSERT INTO `materia` (`id_materia`, `nombre`, `id_horas`, `especialidad`, `id_p
 (2, 'Bases de Datos', 2, 'informatica', 1, 7, 4),
 (3, 'Sistemas Operativos', 3, 'informatica', 1, 7, 4),
 (4, 'Redes y Comunicaciones', 4, 'informatica', 1, 7, 4);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `notas_modificadas`
+--
+
+CREATE TABLE `notas_modificadas` (
+  `id_registro` int(11) NOT NULL,
+  `id_nota` int(11) NOT NULL,
+  `fecha_modificacion` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `nota_vieja` int(11) NOT NULL,
+  `nota_nueva` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -623,6 +637,13 @@ ALTER TABLE `materia`
   ADD KEY `id_plan` (`id_plan`);
 
 --
+-- Indices de la tabla `notas_modificadas`
+--
+ALTER TABLE `notas_modificadas`
+  ADD PRIMARY KEY (`id_registro`),
+  ADD KEY `id_nota` (`id_nota`);
+
+--
 -- Indices de la tabla `orientacion`
 --
 ALTER TABLE `orientacion`
@@ -659,7 +680,9 @@ ALTER TABLE `rol`
 -- Indices de la tabla `solicitud`
 --
 ALTER TABLE `solicitud`
-  ADD PRIMARY KEY (`id_solicitud`);
+  ADD PRIMARY KEY (`id_solicitud`),
+  ADD KEY `id_tipo` (`id_tipo`),
+  ADD KEY `id_usuario` (`id_usuario`);
 
 --
 -- Indices de la tabla `tipo_nota`
@@ -834,6 +857,12 @@ ALTER TABLE `materia`
   ADD CONSTRAINT `materia_ibfk_2` FOREIGN KEY (`id_plan`) REFERENCES `plan_estudio` (`id_plan`);
 
 --
+-- Filtros para la tabla `notas_modificadas`
+--
+ALTER TABLE `notas_modificadas`
+  ADD CONSTRAINT `notas_modificadas_ibfk_1` FOREIGN KEY (`id_nota`) REFERENCES `carga_notas` (`id_nota`);
+
+--
 -- Filtros para la tabla `plan_estudio`
 --
 ALTER TABLE `plan_estudio`
@@ -847,10 +876,11 @@ ALTER TABLE `previa`
   ADD CONSTRAINT `previa_ibfk_1` FOREIGN KEY (`id_materia`) REFERENCES `materia` (`id_materia`);
 
 --
--- Filtros para la tabla `rol`
+-- Filtros para la tabla `solicitud`
 --
-ALTER TABLE `rol`
-  ADD CONSTRAINT `rol_ibfk_4` FOREIGN KEY (`id_rol_usuario`) REFERENCES `rol_usuario` (`id_rol_usuario`);
+ALTER TABLE `solicitud`
+  ADD CONSTRAINT `solicitud_ibfk_1` FOREIGN KEY (`id_tipo`) REFERENCES `tipo_nota` (`id_tipo`),
+  ADD CONSTRAINT `solicitud_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`);
 
 --
 -- Filtros para la tabla `usuario_rol`
@@ -858,13 +888,6 @@ ALTER TABLE `rol`
 ALTER TABLE `usuario_rol`
   ADD CONSTRAINT `usuario_rol_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`),
   ADD CONSTRAINT `usuario_rol_ibfk_2` FOREIGN KEY (`id_rol`) REFERENCES `rol` (`id_rol`);
-
---
--- Filtros para la tabla `version_plan`
---
-ALTER TABLE `version_plan`
-  ADD CONSTRAINT `fk_version_plan` FOREIGN KEY (`id_plan`) REFERENCES `plan_estudio` (`id_plan`),
-  ADD CONSTRAINT `fk_version_usuario` FOREIGN KEY (`id_usuario_creador`) REFERENCES `usuario` (`id_usuario`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
