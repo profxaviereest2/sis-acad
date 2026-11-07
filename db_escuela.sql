@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 07-11-2026 a las 20:28:54
+-- Tiempo de generación: 07-11-2026 a las 21:54:08
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -70,7 +70,7 @@ CREATE TABLE `carga_notas` (
 --
 
 INSERT INTO `carga_notas` (`id_nota`, `id_usuario`, `id_materia`, `id_tipo`, `nro_instancia`, `nota`, `activo`, `fecha`) VALUES
-(1, 2, 1, 1, 1, 9, 1, '2026-11-07 18:53:31'),
+(1, 2, 1, 1, 1, 5, 1, '2026-11-07 19:33:45'),
 (2, 3, 1, 1, 1, 7, 1, '2026-11-07 18:08:16'),
 (3, 4, 1, 1, 1, 7, 1, '2026-11-07 18:08:16'),
 (4, 5, 1, 1, 1, 7, 1, '2026-11-07 18:08:16'),
@@ -107,7 +107,26 @@ INSERT INTO `carga_notas` (`id_nota`, `id_usuario`, `id_materia`, `id_tipo`, `nr
 (35, 17, 1, 1, 2, 8, 1, '2026-11-07 19:11:46'),
 (36, 18, 1, 1, 2, 8, 1, '2026-11-07 19:11:46'),
 (37, 19, 1, 1, 2, 8, 1, '2026-11-07 19:11:46'),
-(38, 20, 1, 1, 2, 8, 1, '2026-11-07 19:11:46');
+(38, 20, 1, 1, 2, 8, 1, '2026-11-07 19:11:46'),
+(39, 2, 1, 1, 3, 9, 1, '2026-11-07 20:22:27'),
+(40, 3, 1, 1, 3, 9, 1, '2026-11-07 20:22:27'),
+(41, 4, 1, 1, 3, 9, 1, '2026-11-07 20:22:27'),
+(42, 5, 1, 1, 3, 9, 1, '2026-11-07 20:22:27'),
+(43, 6, 1, 1, 3, 9, 1, '2026-11-07 20:22:27'),
+(44, 7, 1, 1, 3, 9, 1, '2026-11-07 20:22:27'),
+(45, 8, 1, 1, 3, 9, 1, '2026-11-07 20:22:28'),
+(46, 9, 1, 1, 3, 9, 1, '2026-11-07 20:22:28'),
+(47, 10, 1, 1, 3, 9, 1, '2026-11-07 20:22:28'),
+(48, 11, 1, 1, 3, 9, 1, '2026-11-07 20:22:28'),
+(49, 12, 1, 1, 3, 9, 1, '2026-11-07 20:22:28'),
+(50, 13, 1, 1, 3, 9, 1, '2026-11-07 20:22:28'),
+(51, 14, 1, 1, 3, 9, 1, '2026-11-07 20:22:28'),
+(52, 15, 1, 1, 3, 9, 1, '2026-11-07 20:22:28'),
+(53, 16, 1, 1, 3, 9, 1, '2026-11-07 20:22:28'),
+(54, 17, 1, 1, 3, 9, 1, '2026-11-07 20:22:28'),
+(55, 18, 1, 1, 3, 9, 1, '2026-11-07 20:22:28'),
+(56, 19, 1, 1, 3, 9, 1, '2026-11-07 20:22:28'),
+(57, 20, 1, 1, 3, 9, 1, '2026-11-07 20:22:28');
 
 --
 -- Disparadores `carga_notas`
@@ -332,7 +351,8 @@ CREATE TABLE `notas_modificadas` (
 --
 
 INSERT INTO `notas_modificadas` (`id_registro`, `id_nota`, `fecha_modificacion`, `nota_vieja`, `nota_nueva`) VALUES
-(1, 1, '2026-11-07 18:53:31', 7, 9);
+(1, 1, '2026-11-07 18:53:31', 7, 9),
+(2, 1, '2026-11-07 19:33:45', 9, 5);
 
 -- --------------------------------------------------------
 
@@ -464,15 +484,20 @@ CREATE TABLE `rol` (
   `p_baja_alum` tinyint(1) DEFAULT 0,
   `p_alta_baja_prof` tinyint(1) DEFAULT 0,
   `p_aprobar_exam` tinyint(1) DEFAULT 0,
-  `p_asignar_rol_permiso` tinyint(1) DEFAULT 0
+  `p_asignar_rol_permiso` tinyint(1) DEFAULT 0,
+  `p_carga_notas` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `rol`
 --
 
-INSERT INTO `rol` (`id_rol`, `nombre`, `id_rol_usuario`, `p_carga_alum`, `p_mod_notas`, `p_asistencias`, `p_asig_mate`, `p_alta_alum`, `p_baja_alum`, `p_alta_baja_prof`, `p_aprobar_exam`, `p_asignar_rol_permiso`) VALUES
-(1, 'root', 1, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO `rol` (`id_rol`, `nombre`, `id_rol_usuario`, `p_carga_alum`, `p_mod_notas`, `p_asistencias`, `p_asig_mate`, `p_alta_alum`, `p_baja_alum`, `p_alta_baja_prof`, `p_aprobar_exam`, `p_asignar_rol_permiso`, `p_carga_notas`) VALUES
+(1, 'root', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+(2, 'Profesor', 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0),
+(3, 'Preceptor', 2, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0),
+(4, 'Alumno', 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(5, 'Invitado', 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -482,19 +507,21 @@ INSERT INTO `rol` (`id_rol`, `nombre`, `id_rol_usuario`, `p_carga_alum`, `p_mod_
 
 CREATE TABLE `solicitud` (
   `id_solicitud` int(11) NOT NULL,
+  `tipo` varchar(50) NOT NULL,
   `id_usuario` int(11) NOT NULL,
-  `id_alumno` int(11) NOT NULL,
+  `id_alumno` int(11) DEFAULT NULL,
   `aprobado` tinyint(1) DEFAULT 0,
   `fecha` timestamp NOT NULL DEFAULT current_timestamp(),
-  `id_nota` int(11) NOT NULL
+  `id_nota` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `solicitud`
 --
 
-INSERT INTO `solicitud` (`id_solicitud`, `id_usuario`, `id_alumno`, `aprobado`, `fecha`, `id_nota`) VALUES
-(1, 1, 2, 2, '2026-11-07 18:52:47', 1);
+INSERT INTO `solicitud` (`id_solicitud`, `tipo`, `id_usuario`, `id_alumno`, `aprobado`, `fecha`, `id_nota`) VALUES
+(1, 'modificar_nota', 1, 2, 0, '2026-11-07 18:52:47', 1),
+(2, 'carga_nota', 1, 1001001, 2, '2026-11-07 20:18:23', NULL);
 
 -- --------------------------------------------------------
 
@@ -516,13 +543,7 @@ INSERT INTO `tipo_nota` (`id_tipo`, `tipo`) VALUES
 (2, 'integrador'),
 (3, 'exposicion'),
 (4, 'practica'),
-(5, 'oral'),
-(6, 'nota_primer_c'),
-(7, 'nota_segundo_c'),
-(8, 'informe_segun_c'),
-(9, 'informe_primer_c'),
-(10, 'promedio_general'),
-(11, 'promedio_anual');
+(5, 'oral');
 
 -- --------------------------------------------------------
 
@@ -850,7 +871,7 @@ ALTER TABLE `plan_estudio`
 -- AUTO_INCREMENT de la tabla `solicitud`
 --
 ALTER TABLE `solicitud`
-  MODIFY `id_solicitud` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_solicitud` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `version_plan`
