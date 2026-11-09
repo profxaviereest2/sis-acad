@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 07-11-2026 a las 22:23:37
+-- Tiempo de generación: 09-11-2026 a las 18:57:30
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -443,7 +443,8 @@ INSERT INTO `plan_estudio` (`id_plan`, `nombre`, `id_orientacion`, `id_regimen`,
 
 CREATE TABLE `previa` (
   `id_previa` int(11) NOT NULL,
-  `id_materia` int(11) NOT NULL
+  `id_materia` int(11) NOT NULL,
+  `id_usuario` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
@@ -589,6 +590,19 @@ INSERT INTO `usuario` (`id_usuario`, `nombre`, `apellido`, `dni`, `email`, `pass
 (18, 'Nombre18', 'Apellido18', 10000018, 'alumno18@escuela.com', 'pass123', 1, 'Alumno 7° año informática', NULL, 1),
 (19, 'Nombre19', 'Apellido19', 10000019, 'alumno19@escuela.com', 'pass123', 1, 'Alumno 7° año informática', NULL, 1),
 (20, 'Nombre20', 'Apellido20', 10000020, 'alumno20@escuela.com', 'pass123', 1, 'Alumno 7° año informática', NULL, 1);
+
+--
+-- Disparadores `usuario`
+--
+DELIMITER $$
+CREATE TRIGGER `bi_usuario_rol_invitado` BEFORE INSERT ON `usuario` FOR EACH ROW BEGIN
+    -- Si al registrar el usuario no se especifica un rol (queda NULL), le asigna Invitado (5)
+    IF NEW.id_rol IS NULL THEN
+        SET NEW.id_rol = 5;
+    END IF;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -758,7 +772,8 @@ ALTER TABLE `plan_estudio`
 --
 ALTER TABLE `previa`
   ADD PRIMARY KEY (`id_previa`),
-  ADD KEY `id_materia` (`id_materia`);
+  ADD KEY `id_materia` (`id_materia`),
+  ADD KEY `id_usuario` (`id_usuario`);
 
 --
 -- Indices de la tabla `regimen_evaluacion`
@@ -970,7 +985,8 @@ ALTER TABLE `plan_estudio`
 -- Filtros para la tabla `previa`
 --
 ALTER TABLE `previa`
-  ADD CONSTRAINT `previa_ibfk_1` FOREIGN KEY (`id_materia`) REFERENCES `materia` (`id_materia`);
+  ADD CONSTRAINT `previa_ibfk_1` FOREIGN KEY (`id_materia`) REFERENCES `materia` (`id_materia`),
+  ADD CONSTRAINT `previa_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`);
 
 --
 -- Filtros para la tabla `solicitud`
@@ -990,4 +1006,3 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
