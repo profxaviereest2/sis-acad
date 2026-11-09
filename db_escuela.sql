@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 09-11-2026 a las 18:57:30
+-- Tiempo de generación: 09-11-2026 a las 20:06:51
 -- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.0.30
+-- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -443,8 +443,7 @@ INSERT INTO `plan_estudio` (`id_plan`, `nombre`, `id_orientacion`, `id_regimen`,
 
 CREATE TABLE `previa` (
   `id_previa` int(11) NOT NULL,
-  `id_materia` int(11) NOT NULL,
-  `id_usuario` int(11) NOT NULL
+  `id_materia` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
@@ -477,7 +476,6 @@ CREATE TABLE `rol` (
   `id_rol` int(11) NOT NULL,
   `nombre` text NOT NULL,
   `id_rol_usuario` int(11) NOT NULL,
-  `p_carga_alum` tinyint(1) DEFAULT 0,
   `p_mod_notas` tinyint(1) DEFAULT 0,
   `p_asistencias` tinyint(1) DEFAULT 0,
   `p_asig_mate` tinyint(1) DEFAULT 0,
@@ -486,19 +484,22 @@ CREATE TABLE `rol` (
   `p_alta_baja_prof` tinyint(1) DEFAULT 0,
   `p_aprobar_exam` tinyint(1) DEFAULT 0,
   `p_asignar_rol_permiso` tinyint(1) DEFAULT 0,
-  `p_carga_notas` tinyint(1) NOT NULL DEFAULT 0
+  `p_carga_notas` tinyint(1) NOT NULL DEFAULT 0,
+  `alta_baja_preceptor` tinyint(1) NOT NULL DEFAULT 0,
+  `alta_baja_director` tinyint(1) NOT NULL DEFAULT 0,
+  `p_modificar_plan_estudio` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `rol`
 --
 
-INSERT INTO `rol` (`id_rol`, `nombre`, `id_rol_usuario`, `p_carga_alum`, `p_mod_notas`, `p_asistencias`, `p_asig_mate`, `p_alta_alum`, `p_baja_alum`, `p_alta_baja_prof`, `p_aprobar_exam`, `p_asignar_rol_permiso`, `p_carga_notas`) VALUES
-(1, 'root', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-(2, 'Profesor', 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0),
-(3, 'Preceptor', 2, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0),
-(4, 'Alumno', 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
-(5, 'Invitado', 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO `rol` (`id_rol`, `nombre`, `id_rol_usuario`, `p_mod_notas`, `p_asistencias`, `p_asig_mate`, `p_alta_alum`, `p_baja_alum`, `p_alta_baja_prof`, `p_aprobar_exam`, `p_asignar_rol_permiso`, `p_carga_notas`, `alta_baja_preceptor`, `alta_baja_director`, `p_modificar_plan_estudio`) VALUES
+(1, 'root', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1),
+(2, 'Profesor', 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+(3, 'Preceptor', 2, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1),
+(4, 'Alumno', 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+(5, 'Invitado', 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -590,19 +591,6 @@ INSERT INTO `usuario` (`id_usuario`, `nombre`, `apellido`, `dni`, `email`, `pass
 (18, 'Nombre18', 'Apellido18', 10000018, 'alumno18@escuela.com', 'pass123', 1, 'Alumno 7° año informática', NULL, 1),
 (19, 'Nombre19', 'Apellido19', 10000019, 'alumno19@escuela.com', 'pass123', 1, 'Alumno 7° año informática', NULL, 1),
 (20, 'Nombre20', 'Apellido20', 10000020, 'alumno20@escuela.com', 'pass123', 1, 'Alumno 7° año informática', NULL, 1);
-
---
--- Disparadores `usuario`
---
-DELIMITER $$
-CREATE TRIGGER `bi_usuario_rol_invitado` BEFORE INSERT ON `usuario` FOR EACH ROW BEGIN
-    -- Si al registrar el usuario no se especifica un rol (queda NULL), le asigna Invitado (5)
-    IF NEW.id_rol IS NULL THEN
-        SET NEW.id_rol = 5;
-    END IF;
-END
-$$
-DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -772,8 +760,7 @@ ALTER TABLE `plan_estudio`
 --
 ALTER TABLE `previa`
   ADD PRIMARY KEY (`id_previa`),
-  ADD KEY `id_materia` (`id_materia`),
-  ADD KEY `id_usuario` (`id_usuario`);
+  ADD KEY `id_materia` (`id_materia`);
 
 --
 -- Indices de la tabla `regimen_evaluacion`
@@ -985,8 +972,7 @@ ALTER TABLE `plan_estudio`
 -- Filtros para la tabla `previa`
 --
 ALTER TABLE `previa`
-  ADD CONSTRAINT `previa_ibfk_1` FOREIGN KEY (`id_materia`) REFERENCES `materia` (`id_materia`),
-  ADD CONSTRAINT `previa_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`);
+  ADD CONSTRAINT `previa_ibfk_1` FOREIGN KEY (`id_materia`) REFERENCES `materia` (`id_materia`);
 
 --
 -- Filtros para la tabla `solicitud`
@@ -1001,6 +987,13 @@ ALTER TABLE `solicitud`
 ALTER TABLE `usuario_rol`
   ADD CONSTRAINT `usuario_rol_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`),
   ADD CONSTRAINT `usuario_rol_ibfk_2` FOREIGN KEY (`id_rol`) REFERENCES `rol` (`id_rol`);
+
+--
+-- Filtros para la tabla `version_plan`
+--
+ALTER TABLE `version_plan`
+  ADD CONSTRAINT `version_plan_ibfk_1` FOREIGN KEY (`id_plan`) REFERENCES `plan_estudio` (`id_plan`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `version_plan_ibfk_2` FOREIGN KEY (`id_usuario_creador`) REFERENCES `usuario` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
