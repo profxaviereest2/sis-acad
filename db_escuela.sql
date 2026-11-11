@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 09-11-2026 a las 20:06:51
+-- Tiempo de generación: 11-11-2026 a las 02:04:14
 -- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.2.12
+-- Versión de PHP: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -45,8 +45,49 @@ CREATE TABLE `asistencia_detalle` (
   `id_alumno` int(11) NOT NULL,
   `id_estado` int(11) NOT NULL,
   `observacion` varchar(255) DEFAULT NULL,
-  `id_rol_usuario` int(11) NOT NULL
+  `id_rol_usuario` int(11) NOT NULL,
+  `id_usuario_responsable` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `aula_login_attempts`
+--
+
+CREATE TABLE `aula_login_attempts` (
+  `ip_hash` char(64) NOT NULL,
+  `dni` int(11) NOT NULL,
+  `attempts` smallint(5) UNSIGNED NOT NULL DEFAULT 0,
+  `window_started` datetime NOT NULL,
+  `blocked_until` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `aula_login_attempts`
+--
+
+INSERT INTO `aula_login_attempts` (`ip_hash`, `dni`, `attempts`, `window_started`, `blocked_until`) VALUES
+('eff8e7ca506627fe15dda5e0e512fcaad70b6d520f37cc76597fdb4f2d83a1a3', 0, 1, '2026-11-10 21:17:24', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `aula_sequences`
+--
+
+CREATE TABLE `aula_sequences` (
+  `entity` varchar(40) NOT NULL,
+  `next_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `aula_sequences`
+--
+
+INSERT INTO `aula_sequences` (`entity`, `next_id`) VALUES
+('curso', 2),
+('usuario', 48302811);
 
 -- --------------------------------------------------------
 
@@ -62,7 +103,7 @@ CREATE TABLE `carga_notas` (
   `nro_instancia` int(11) NOT NULL DEFAULT 1,
   `nota` int(11) NOT NULL,
   `activo` tinyint(1) NOT NULL,
-  `fecha` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `fecha` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
@@ -83,7 +124,7 @@ INSERT INTO `carga_notas` (`id_nota`, `id_usuario`, `id_materia`, `id_tipo`, `nr
 (11, 12, 1, 1, 1, 7, 1, '2026-11-07 18:08:16'),
 (12, 13, 1, 1, 1, 7, 1, '2026-11-07 18:08:16'),
 (13, 14, 1, 1, 1, 7, 1, '2026-11-07 18:08:16'),
-(14, 15, 1, 1, 1, 7, 1, '2026-11-07 18:08:16'),
+(14, 15, 1, 1, 1, 8, 1, '2026-11-10 16:07:53'),
 (15, 16, 1, 1, 1, 7, 1, '2026-11-07 18:08:16'),
 (16, 17, 1, 1, 1, 7, 1, '2026-11-07 18:08:16'),
 (17, 18, 1, 1, 1, 7, 1, '2026-11-07 18:08:16'),
@@ -121,7 +162,7 @@ INSERT INTO `carga_notas` (`id_nota`, `id_usuario`, `id_materia`, `id_tipo`, `nr
 (49, 12, 1, 1, 3, 9, 1, '2026-11-07 20:22:28'),
 (50, 13, 1, 1, 3, 9, 1, '2026-11-07 20:22:28'),
 (51, 14, 1, 1, 3, 9, 1, '2026-11-07 20:22:28'),
-(52, 15, 1, 1, 3, 9, 1, '2026-11-07 20:22:28'),
+(52, 15, 1, 1, 3, 8, 1, '2026-11-10 16:07:53'),
 (53, 16, 1, 1, 3, 9, 1, '2026-11-07 20:22:28'),
 (54, 17, 1, 1, 3, 9, 1, '2026-11-07 20:22:28'),
 (55, 18, 1, 1, 3, 9, 1, '2026-11-07 20:22:28'),
@@ -143,6 +184,32 @@ CREATE TRIGGER `carga_instancia_notas` BEFORE INSERT ON `carga_notas` FOR EACH R
 END
 $$
 DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `configuracion_sistema`
+--
+
+CREATE TABLE `configuracion_sistema` (
+  `clave` varchar(80) NOT NULL,
+  `valor` text NOT NULL,
+  `actualizado_por` int(11) DEFAULT NULL,
+  `actualizado_en` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `configuracion_sistema`
+--
+
+INSERT INTO `configuracion_sistema` (`clave`, `valor`, `actualizado_por`, `actualizado_en`) VALUES
+('ciclo_lectivo', '2026', 1, '2026-11-10 23:01:35'),
+('direccion_institucional', '', 1, '2026-11-10 23:01:35'),
+('email_institucional', '', 1, '2026-11-10 23:01:35'),
+('logo_institucion', 'img/logo_institucion_1794351695.png', 1, '2026-11-10 23:01:35'),
+('mensaje_bienvenida', 'Ingresá con tu DNI y contraseña para acceder al sistema.', 1, '2026-11-10 23:01:35'),
+('nombre_institucion', '', 1, '2026-11-10 23:01:35'),
+('telefono_institucional', '', 1, '2026-11-10 23:01:35');
 
 -- --------------------------------------------------------
 
@@ -231,6 +298,30 @@ INSERT INTO `detalle_plan` (`id_detalle`, `id_materia`, `id_plan`, `anio_cursada
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `docente_curso_materia`
+--
+
+CREATE TABLE `docente_curso_materia` (
+  `id_asignacion` int(11) NOT NULL,
+  `id_docente` int(11) NOT NULL,
+  `id_curso` int(11) NOT NULL,
+  `id_materia` int(11) NOT NULL,
+  `anio_lectivo` smallint(4) NOT NULL,
+  `activo` tinyint(1) NOT NULL DEFAULT 1,
+  `creado_en` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `docente_curso_materia`
+--
+
+INSERT INTO `docente_curso_materia` (`id_asignacion`, `id_docente`, `id_curso`, `id_materia`, `anio_lectivo`, `activo`, `creado_en`) VALUES
+(1, 3, 1, 2, 2026, 0, '2026-11-11 00:32:00'),
+(5, 48302809, 1, 2, 2026, 1, '2026-11-11 00:33:33');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `estados_asistencia`
 --
 
@@ -239,6 +330,16 @@ CREATE TABLE `estados_asistencia` (
   `codigo` varchar(20) NOT NULL,
   `descripcion` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Volcado de datos para la tabla `estados_asistencia`
+--
+
+INSERT INTO `estados_asistencia` (`id_estado`, `codigo`, `descripcion`) VALUES
+(1, 'P', 'Presente'),
+(2, 'A', 'Ausente'),
+(3, 'T', 'Llegada tarde'),
+(4, 'J', 'Ausencia justificada');
 
 -- --------------------------------------------------------
 
@@ -425,15 +526,17 @@ CREATE TABLE `plan_estudio` (
   `id_orientacion` int(11) DEFAULT NULL,
   `id_regimen` int(11) NOT NULL,
   `codigo_resolucion` varchar(50) DEFAULT NULL,
-  `anio_validez` int(11) DEFAULT NULL
+  `anio_validez` int(11) DEFAULT NULL,
+  `anio_inicio_cursada` tinyint(3) UNSIGNED NOT NULL DEFAULT 1,
+  `anio_fin_cursada` tinyint(3) UNSIGNED NOT NULL DEFAULT 7
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `plan_estudio`
 --
 
-INSERT INTO `plan_estudio` (`id_plan`, `nombre`, `id_orientacion`, `id_regimen`, `codigo_resolucion`, `anio_validez`) VALUES
-(1, 'Plan 2026', 1, 1, 'Res-2026-001', 2026);
+INSERT INTO `plan_estudio` (`id_plan`, `nombre`, `id_orientacion`, `id_regimen`, `codigo_resolucion`, `anio_validez`, `anio_inicio_cursada`, `anio_fin_cursada`) VALUES
+(1, 'Plan 2026', 1, 1, 'Res-2026-001', 2026, 1, 7);
 
 -- --------------------------------------------------------
 
@@ -443,7 +546,8 @@ INSERT INTO `plan_estudio` (`id_plan`, `nombre`, `id_orientacion`, `id_regimen`,
 
 CREATE TABLE `previa` (
   `id_previa` int(11) NOT NULL,
-  `id_materia` int(11) NOT NULL
+  `id_materia` int(11) NOT NULL,
+  `id_usuario` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
@@ -496,10 +600,10 @@ CREATE TABLE `rol` (
 
 INSERT INTO `rol` (`id_rol`, `nombre`, `id_rol_usuario`, `p_mod_notas`, `p_asistencias`, `p_asig_mate`, `p_alta_alum`, `p_baja_alum`, `p_alta_baja_prof`, `p_aprobar_exam`, `p_asignar_rol_permiso`, `p_carga_notas`, `alta_baja_preceptor`, `alta_baja_director`, `p_modificar_plan_estudio`) VALUES
 (1, 'root', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1),
-(2, 'Profesor', 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1),
-(3, 'Preceptor', 2, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1),
-(4, 'Alumno', 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1),
-(5, 'Invitado', 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
+(2, 'Profesor', 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0),
+(3, 'Preceptor', 2, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0),
+(4, 'Alumno', 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(5, 'Invitado', 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -512,6 +616,9 @@ CREATE TABLE `solicitud` (
   `tipo` varchar(50) NOT NULL,
   `id_usuario` int(11) NOT NULL,
   `id_alumno` int(11) DEFAULT NULL,
+  `id_curso` int(11) DEFAULT NULL,
+  `id_materia` int(11) DEFAULT NULL,
+  `id_tipo` int(11) DEFAULT NULL,
   `aprobado` tinyint(1) DEFAULT 0,
   `fecha` timestamp NOT NULL DEFAULT current_timestamp(),
   `id_nota` int(11) DEFAULT NULL
@@ -521,9 +628,27 @@ CREATE TABLE `solicitud` (
 -- Volcado de datos para la tabla `solicitud`
 --
 
-INSERT INTO `solicitud` (`id_solicitud`, `tipo`, `id_usuario`, `id_alumno`, `aprobado`, `fecha`, `id_nota`) VALUES
-(1, 'modificar_nota', 1, 2, 0, '2026-11-07 18:52:47', 1),
-(2, 'carga_nota', 1, 1001001, 2, '2026-11-07 20:18:23', NULL);
+INSERT INTO `solicitud` (`id_solicitud`, `tipo`, `id_usuario`, `id_alumno`, `id_curso`, `id_materia`, `id_tipo`, `aprobado`, `fecha`, `id_nota`) VALUES
+(1, 'modificar_nota', 1, 2, NULL, NULL, NULL, 1, '2026-11-07 18:52:47', 1),
+(2, 'carga_nota', 1, NULL, 1, 1, 1, 2, '2026-11-07 20:18:23', NULL),
+(4, 'Otro tipo de acceso institucional: alumno', 48244151, 48244151, NULL, NULL, NULL, 3, '2026-11-09 19:53:59', NULL),
+(5, 'Otro tipo de acceso institucional: lo', 48302809, 48302809, NULL, NULL, NULL, 1, '2026-11-09 21:23:55', NULL),
+(6, 'carga_nota', 48302809, NULL, 1, 2, 1, 0, '2026-11-11 00:45:58', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `solicitud_invitado`
+--
+
+CREATE TABLE `solicitud_invitado` (
+  `id_solicitud` int(11) NOT NULL,
+  `id_usuario` int(11) NOT NULL,
+  `categoria` varchar(80) NOT NULL,
+  `descripcion` text NOT NULL,
+  `estado` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0 pendiente, 1 aprobada, 3 rechazada',
+  `fecha` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -571,26 +696,29 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`id_usuario`, `nombre`, `apellido`, `dni`, `email`, `pass`, `activo`, `descripcion_actividad`, `id_rol`, `id_curso`) VALUES
-(1, 'Administrador', 'Root', 12345678, 'root@escuela.com', 'root123', 1, 'Usuario root con acceso total', 1, NULL),
-(2, 'Nombre2', 'Apellido2', 10000002, 'alumno2@escuela.com', 'pass123', 1, 'Alumno 7° año informática', NULL, 1),
-(3, 'Nombre3', 'Apellido3', 10000003, 'alumno3@escuela.com', 'pass123', 1, 'Alumno 7° año informática', NULL, 1),
-(4, 'Nombre4', 'Apellido4', 10000004, 'alumno4@escuela.com', 'pass123', 1, 'Alumno 7° año informática', NULL, 1),
-(5, 'Nombre5', 'Apellido5', 10000005, 'alumno5@escuela.com', 'pass123', 1, 'Alumno 7° año informática', NULL, 1),
-(6, 'Nombre6', 'Apellido6', 10000006, 'alumno6@escuela.com', 'pass123', 1, 'Alumno 7° año informática', NULL, 1),
-(7, 'Nombre7', 'Apellido7', 10000007, 'alumno7@escuela.com', 'pass123', 1, 'Alumno 7° año informática', NULL, 1),
-(8, 'Nombre8', 'Apellido8', 10000008, 'alumno8@escuela.com', 'pass123', 1, 'Alumno 7° año informática', NULL, 1),
-(9, 'Nombre9', 'Apellido9', 10000009, 'alumno9@escuela.com', 'pass123', 1, 'Alumno 7° año informática', NULL, 1),
-(10, 'Nombre10', 'Apellido10', 10000010, 'alumno10@escuela.com', 'pass123', 1, 'Alumno 7° año informática', NULL, 1),
-(11, 'Nombre11', 'Apellido11', 10000011, 'alumno11@escuela.com', 'pass123', 1, 'Alumno 7° año informática', NULL, 1),
-(12, 'Nombre12', 'Apellido12', 10000012, 'alumno12@escuela.com', 'pass123', 1, 'Alumno 7° año informática', NULL, 1),
-(13, 'Nombre13', 'Apellido13', 10000013, 'alumno13@escuela.com', 'pass123', 1, 'Alumno 7° año informática', NULL, 1),
-(14, 'Nombre14', 'Apellido14', 10000014, 'alumno14@escuela.com', 'pass123', 1, 'Alumno 7° año informática', NULL, 1),
-(15, 'Nombre15', 'Apellido15', 10000015, 'alumno15@escuela.com', 'pass123', 1, 'Alumno 7° año informática', NULL, 1),
-(16, 'Nombre16', 'Apellido16', 10000016, 'alumno16@escuela.com', 'pass123', 1, 'Alumno 7° año informática', NULL, 1),
-(17, 'Nombre17', 'Apellido17', 10000017, 'alumno17@escuela.com', 'pass123', 1, 'Alumno 7° año informática', NULL, 1),
-(18, 'Nombre18', 'Apellido18', 10000018, 'alumno18@escuela.com', 'pass123', 1, 'Alumno 7° año informática', NULL, 1),
-(19, 'Nombre19', 'Apellido19', 10000019, 'alumno19@escuela.com', 'pass123', 1, 'Alumno 7° año informática', NULL, 1),
-(20, 'Nombre20', 'Apellido20', 10000020, 'alumno20@escuela.com', 'pass123', 1, 'Alumno 7° año informática', NULL, 1);
+(1, 'Administrador', 'Root', 12345678, 'root@escuela.com', '$2y$10$Szfy3jz.NxzUY0JytRZe/.PQ1Y81nWEwMGw1CB.YXhp9XE1EP92Ha', 1, 'Usuario root con acceso total', 1, NULL),
+(2, 'Nombre2', 'Apellido2', 10000002, 'alumno2@escuela.com', '$2y$10$W4I4cYcZ9hex5rmq2iSAcOZjux/SqHVwmOUSQrs3WudbwLL7YrJmy', 1, 'Alumno 7° año informática', 4, 1),
+(3, 'Nombre3', 'Apellido3', 0, 'alumno3@escuela.com', '$2y$10$Bqp4vId2hh.pi/zYMfbfu.Uk8H/vjpfebphRil7x30EQO5XegGCwW', 1, 'Alumno 7° año informática', 2, 1),
+(4, 'Nombre4', 'Apellido4', 10000004, 'alumno4@escuela.com', '$2y$10$5f6c1HsGsGEiS0hbdvqIcujHsyuZzUDcuiZ8ktFCp5ebVl2u2k2pe', 1, 'Alumno 7° año informática', 3, 1),
+(5, 'Nombre5', 'Apellido5', 10000005, 'alumno5@escuela.com', 'pass123', 1, 'Alumno 7° año informática', 4, 1),
+(6, 'Nombre6', 'Apellido6', 10000006, 'alumno6@escuela.com', 'pass123', 1, 'Alumno 7° año informática', 4, 1),
+(7, 'Nombre7', 'Apellido7', 10000007, 'alumno7@escuela.com', 'pass123', 1, 'Alumno 7° año informática', 4, 1),
+(8, 'Nombre8', 'Apellido8', 10000008, 'alumno8@escuela.com', 'pass123', 1, 'Alumno 7° año informática', 4, 1),
+(9, 'Nombre9', 'Apellido9', 10000009, 'alumno9@escuela.com', 'pass123', 1, 'Alumno 7° año informática', 4, 1),
+(10, 'Nombre10', 'Apellido10', 10000010, 'alumno10@escuela.com', 'pass123', 1, 'Alumno 7° año informática', 4, 1),
+(11, 'Nombre11', 'Apellido11', 10000011, 'alumno11@escuela.com', 'pass123', 1, 'Alumno 7° año informática', 4, 1),
+(12, 'Nombre12', 'Apellido12', 10000012, 'alumno12@escuela.com', 'pass123', 1, 'Alumno 7° año informática', 4, 1),
+(13, 'Nombre13', 'Apellido13', 10000013, 'alumno13@escuela.com', 'pass123', 1, 'Alumno 7° año informática', 4, 1),
+(14, 'Nombre14', 'Apellido14', 10000014, 'alumno14@escuela.com', 'pass123', 1, 'Alumno 7° año informática', 4, 1),
+(15, 'Nombre15', 'Apellido15', 10000015, 'alumno15@escuela.com', 'pass123', 1, 'Alumno 7° año informática', 4, 1),
+(16, 'Nombre16', 'Apellido16', 10000016, 'alumno16@escuela.com', 'pass123', 1, 'Alumno 7° año informática', 4, 1),
+(17, 'Nombre17', 'Apellido17', 10000017, 'alumno17@escuela.com', 'pass123', 1, 'Alumno 7° año informática', 4, 1),
+(18, 'Nombre18', 'Apellido18', 10000018, 'alumno18@escuela.com', 'pass123', 1, 'Alumno 7° año informática', 4, 1),
+(19, 'Nombre19', 'Apellido19', 10000019, 'alumno19@escuela.com', 'pass123', 1, 'Alumno 7° año informática', 4, 1),
+(20, 'Malumno', 'Galumno', 10000020, 'alumno20@escuela.com', 'pass123', 0, 'Alumno 7° año informática', 4, 1),
+(48244151, 'Brian', 'Ocampo', 48244151, 'brianocampo886@gmail.com', '$2y$10$chh6Ns6m8r/ObzMnP1HHQOu8qHDtMsvo1jfXDxjF9V6lCTgyehd6q', 1, 'alumno nuevo', 4, 1),
+(48302809, 'pato', 'saucedo', 48302809, 'pato@gmail.com', '$2y$10$9jbbYMjVpzuxhzM4loE0Su1zJ1C45ULgx6umH3DuodDNIspnpSPfu', 1, 'Usuario registrado vía web (Invitado)', 2, NULL),
+(48302810, 'Emanuel', 'Caballero', 48704361, 'emacaballer777@gmail.com', '$2y$10$HUu5eq0XZ5jAAWHyBsQmv.TqlR18IfTjKcNiG5NpaAp8uaqvxfdEi', 1, 'enano', 4, 1);
 
 -- --------------------------------------------------------
 
@@ -609,7 +737,29 @@ CREATE TABLE `usuario_rol` (
 --
 
 INSERT INTO `usuario_rol` (`id_usuario_rol`, `id_usuario`, `id_rol`) VALUES
-(1, 1, 1);
+(1, 1, 1),
+(2, 48244151, 4),
+(3, 48302809, 2),
+(4, 2, 4),
+(5, 3, 4),
+(6, 4, 4),
+(7, 5, 4),
+(8, 6, 4),
+(9, 7, 4),
+(10, 8, 4),
+(11, 9, 4),
+(12, 10, 4),
+(13, 11, 4),
+(14, 12, 4),
+(15, 13, 4),
+(16, 14, 4),
+(17, 15, 4),
+(18, 16, 4),
+(19, 17, 4),
+(20, 18, 4),
+(21, 19, 4),
+(22, 20, 4),
+(35, 48302810, 4);
 
 -- --------------------------------------------------------
 
@@ -643,6 +793,7 @@ INSERT INTO `version_plan` (`id_version`, `id_plan`, `nro_version`, `estado`, `v
 --
 ALTER TABLE `asistencia`
   ADD UNIQUE KEY `id_asistencia` (`id_asistencia`),
+  ADD UNIQUE KEY `uq_asistencia_fecha_horario` (`fecha`,`id_curso_horario`),
   ADD KEY `id_asistencia_2` (`id_asistencia`),
   ADD KEY `id_asistencia_3` (`id_asistencia`),
   ADD KEY `id_curso_horario` (`id_curso_horario`);
@@ -652,18 +803,41 @@ ALTER TABLE `asistencia`
 --
 ALTER TABLE `asistencia_detalle`
   ADD PRIMARY KEY (`id_detalle`),
+  ADD UNIQUE KEY `uq_asistencia_detalle_alumno` (`id_asistencia`,`id_alumno`),
   ADD KEY `id_estado` (`id_estado`),
   ADD KEY `id_asistencia` (`id_asistencia`),
-  ADD KEY `id_rol_usuario` (`id_rol_usuario`);
+  ADD KEY `id_rol_usuario` (`id_rol_usuario`),
+  ADD KEY `idx_asistencia_responsable` (`id_usuario_responsable`);
+
+--
+-- Indices de la tabla `aula_login_attempts`
+--
+ALTER TABLE `aula_login_attempts`
+  ADD PRIMARY KEY (`ip_hash`,`dni`),
+  ADD KEY `idx_aula_login_blocked` (`blocked_until`);
+
+--
+-- Indices de la tabla `aula_sequences`
+--
+ALTER TABLE `aula_sequences`
+  ADD PRIMARY KEY (`entity`);
 
 --
 -- Indices de la tabla `carga_notas`
 --
 ALTER TABLE `carga_notas`
   ADD PRIMARY KEY (`id_nota`),
+  ADD UNIQUE KEY `uq_carga_notas_instancia` (`id_usuario`,`id_materia`,`id_tipo`,`nro_instancia`),
   ADD KEY `id_usuario` (`id_usuario`,`id_materia`,`id_tipo`),
   ADD KEY `id_materia` (`id_materia`),
   ADD KEY `id_tipo` (`id_tipo`);
+
+--
+-- Indices de la tabla `configuracion_sistema`
+--
+ALTER TABLE `configuracion_sistema`
+  ADD PRIMARY KEY (`clave`),
+  ADD KEY `idx_configuracion_actualizado_por` (`actualizado_por`);
 
 --
 -- Indices de la tabla `contenido_curricular`
@@ -694,14 +868,25 @@ ALTER TABLE `curso_horario`
 --
 ALTER TABLE `detalle_plan`
   ADD PRIMARY KEY (`id_detalle`),
+  ADD UNIQUE KEY `uq_detalle_plan_materia_plan` (`id_materia`,`id_plan`),
   ADD KEY `id_materia` (`id_materia`),
   ADD KEY `id_plan` (`id_plan`);
+
+--
+-- Indices de la tabla `docente_curso_materia`
+--
+ALTER TABLE `docente_curso_materia`
+  ADD PRIMARY KEY (`id_asignacion`),
+  ADD UNIQUE KEY `uq_docente_curso_materia_anio` (`id_docente`,`id_curso`,`id_materia`,`anio_lectivo`),
+  ADD KEY `idx_dcm_curso_materia` (`id_curso`,`id_materia`),
+  ADD KEY `fk_dcm_materia` (`id_materia`);
 
 --
 -- Indices de la tabla `estados_asistencia`
 --
 ALTER TABLE `estados_asistencia`
-  ADD PRIMARY KEY (`id_estado`);
+  ADD PRIMARY KEY (`id_estado`),
+  ADD UNIQUE KEY `uq_estados_asistencia_codigo` (`codigo`);
 
 --
 -- Indices de la tabla `faltas`
@@ -760,7 +945,8 @@ ALTER TABLE `plan_estudio`
 --
 ALTER TABLE `previa`
   ADD PRIMARY KEY (`id_previa`),
-  ADD KEY `id_materia` (`id_materia`);
+  ADD KEY `id_materia` (`id_materia`),
+  ADD KEY `id_usuario` (`id_usuario`);
 
 --
 -- Indices de la tabla `regimen_evaluacion`
@@ -781,7 +967,17 @@ ALTER TABLE `solicitud`
   ADD PRIMARY KEY (`id_solicitud`),
   ADD KEY `id_usuario` (`id_usuario`),
   ADD KEY `id_nota` (`id_nota`),
-  ADD KEY `id_nota_2` (`id_nota`);
+  ADD KEY `id_nota_2` (`id_nota`),
+  ADD KEY `idx_solicitud_estado_usuario` (`aprobado`,`id_usuario`,`tipo`),
+  ADD KEY `idx_solicitud_carga` (`id_usuario`,`id_curso`,`id_materia`,`id_tipo`,`aprobado`);
+
+--
+-- Indices de la tabla `solicitud_invitado`
+--
+ALTER TABLE `solicitud_invitado`
+  ADD PRIMARY KEY (`id_solicitud`),
+  ADD KEY `idx_solicitud_invitado_usuario_fecha` (`id_usuario`,`fecha`),
+  ADD KEY `idx_solicitud_invitado_estado_fecha` (`estado`,`fecha`);
 
 --
 -- Indices de la tabla `tipo_nota`
@@ -793,7 +989,9 @@ ALTER TABLE `tipo_nota`
 -- Indices de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  ADD PRIMARY KEY (`id_usuario`);
+  ADD PRIMARY KEY (`id_usuario`),
+  ADD UNIQUE KEY `uq_usuario_dni` (`dni`),
+  ADD KEY `idx_usuario_id_rol` (`id_rol`);
 
 --
 -- Indices de la tabla `usuario_rol`
@@ -808,6 +1006,7 @@ ALTER TABLE `usuario_rol`
 --
 ALTER TABLE `version_plan`
   ADD PRIMARY KEY (`id_version`),
+  ADD UNIQUE KEY `uq_version_plan_numero` (`id_plan`,`nro_version`),
   ADD KEY `fk_version_plan` (`id_plan`),
   ADD KEY `fk_version_usuario` (`id_usuario_creador`);
 
@@ -816,10 +1015,22 @@ ALTER TABLE `version_plan`
 --
 
 --
+-- AUTO_INCREMENT de la tabla `asistencia`
+--
+ALTER TABLE `asistencia`
+  MODIFY `id_asistencia` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `asistencia_detalle`
 --
 ALTER TABLE `asistencia_detalle`
   MODIFY `id_detalle` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `carga_notas`
+--
+ALTER TABLE `carga_notas`
+  MODIFY `id_nota` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
 -- AUTO_INCREMENT de la tabla `contenido_curricular`
@@ -840,10 +1051,16 @@ ALTER TABLE `detalle_plan`
   MODIFY `id_detalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT de la tabla `docente_curso_materia`
+--
+ALTER TABLE `docente_curso_materia`
+  MODIFY `id_asignacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT de la tabla `estados_asistencia`
 --
 ALTER TABLE `estados_asistencia`
-  MODIFY `id_estado` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_estado` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `horarios`
@@ -856,6 +1073,12 @@ ALTER TABLE `horarios`
 --
 ALTER TABLE `materia`
   MODIFY `id_materia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT de la tabla `notas_modificadas`
+--
+ALTER TABLE `notas_modificadas`
+  MODIFY `id_registro` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `orientacion`
@@ -873,7 +1096,19 @@ ALTER TABLE `plan_estudio`
 -- AUTO_INCREMENT de la tabla `solicitud`
 --
 ALTER TABLE `solicitud`
-  MODIFY `id_solicitud` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_solicitud` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT de la tabla `solicitud_invitado`
+--
+ALTER TABLE `solicitud_invitado`
+  MODIFY `id_solicitud` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `usuario_rol`
+--
+ALTER TABLE `usuario_rol`
+  MODIFY `id_usuario_rol` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT de la tabla `version_plan`
@@ -895,8 +1130,9 @@ ALTER TABLE `asistencia`
 -- Filtros para la tabla `asistencia_detalle`
 --
 ALTER TABLE `asistencia_detalle`
-  ADD CONSTRAINT `asistencia_detalle_ibfk_1` FOREIGN KEY (`id_estado`) REFERENCES `estados_asistencia` (`id_estado`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `asistencia_detalle_ibfk_2` FOREIGN KEY (`id_asistencia`) REFERENCES `asistencia` (`id_asistencia`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `asistencia_detalle_ibfk_2` FOREIGN KEY (`id_asistencia`) REFERENCES `asistencia` (`id_asistencia`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_asistencia_detalle_estado` FOREIGN KEY (`id_estado`) REFERENCES `estados_asistencia` (`id_estado`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_asistencia_responsable_usuario` FOREIGN KEY (`id_usuario_responsable`) REFERENCES `usuario` (`id_usuario`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `carga_notas`
@@ -932,6 +1168,14 @@ ALTER TABLE `curso_horario`
 ALTER TABLE `detalle_plan`
   ADD CONSTRAINT `detalle_plan_ibfk_1` FOREIGN KEY (`id_materia`) REFERENCES `materia` (`id_materia`),
   ADD CONSTRAINT `detalle_plan_ibfk_2` FOREIGN KEY (`id_plan`) REFERENCES `plan_estudio` (`id_plan`);
+
+--
+-- Filtros para la tabla `docente_curso_materia`
+--
+ALTER TABLE `docente_curso_materia`
+  ADD CONSTRAINT `fk_dcm_curso` FOREIGN KEY (`id_curso`) REFERENCES `curso` (`id_curso`),
+  ADD CONSTRAINT `fk_dcm_docente` FOREIGN KEY (`id_docente`) REFERENCES `usuario` (`id_usuario`),
+  ADD CONSTRAINT `fk_dcm_materia` FOREIGN KEY (`id_materia`) REFERENCES `materia` (`id_materia`);
 
 --
 -- Filtros para la tabla `faltas`
@@ -982,6 +1226,18 @@ ALTER TABLE `solicitud`
   ADD CONSTRAINT `solicitud_ibfk_3` FOREIGN KEY (`id_nota`) REFERENCES `carga_notas` (`id_nota`);
 
 --
+-- Filtros para la tabla `solicitud_invitado`
+--
+ALTER TABLE `solicitud_invitado`
+  ADD CONSTRAINT `fk_solicitud_invitado_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  ADD CONSTRAINT `fk_usuario_rol_principal` FOREIGN KEY (`id_rol`) REFERENCES `rol` (`id_rol`) ON UPDATE CASCADE;
+
+--
 -- Filtros para la tabla `usuario_rol`
 --
 ALTER TABLE `usuario_rol`
@@ -992,8 +1248,8 @@ ALTER TABLE `usuario_rol`
 -- Filtros para la tabla `version_plan`
 --
 ALTER TABLE `version_plan`
-  ADD CONSTRAINT `version_plan_ibfk_1` FOREIGN KEY (`id_plan`) REFERENCES `plan_estudio` (`id_plan`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `version_plan_ibfk_2` FOREIGN KEY (`id_usuario_creador`) REFERENCES `usuario` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_version_plan_creador` FOREIGN KEY (`id_usuario_creador`) REFERENCES `usuario` (`id_usuario`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `version_plan_ibfk_1` FOREIGN KEY (`id_plan`) REFERENCES `plan_estudio` (`id_plan`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
