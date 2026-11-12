@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 12-11-2026 a las 01:35:02
+-- Tiempo de generación: 12-11-2026 a las 19:50:55
 -- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.2.12
+-- Versión de PHP: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,8 +18,159 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `db_escuela`
+-- Base de datos: `bd_escuela`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `alumno_actuacion`
+--
+
+CREATE TABLE `alumno_actuacion` (
+  `id_actuacion` bigint(20) UNSIGNED NOT NULL,
+  `id_usuario` int(11) NOT NULL,
+  `tipo` enum('OBSERVACION','SUSPENSION','EXPULSION','OTRA') NOT NULL,
+  `fecha_inicio` date NOT NULL,
+  `fecha_fin` date DEFAULT NULL,
+  `fundamento` text NOT NULL,
+  `resolucion` varchar(120) DEFAULT NULL,
+  `estado` enum('ABIERTA','RESUELTA','ANULADA') NOT NULL DEFAULT 'ABIERTA',
+  `registrado_por` int(11) DEFAULT NULL,
+  `creado_en` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `alumno_egreso`
+--
+
+CREATE TABLE `alumno_egreso` (
+  `id_egreso` bigint(20) UNSIGNED NOT NULL,
+  `id_usuario` int(11) NOT NULL,
+  `id_plan` int(11) DEFAULT NULL,
+  `fecha_egreso` date NOT NULL,
+  `tipo_titulo` varchar(160) DEFAULT NULL,
+  `numero_acta` varchar(80) DEFAULT NULL,
+  `validacion_academica` tinyint(1) NOT NULL DEFAULT 0,
+  `validado_por` int(11) DEFAULT NULL,
+  `observacion` text DEFAULT NULL,
+  `registrado_por` int(11) DEFAULT NULL,
+  `creado_en` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `alumno_inscripcion`
+--
+
+CREATE TABLE `alumno_inscripcion` (
+  `id_inscripcion` bigint(20) UNSIGNED NOT NULL,
+  `id_usuario` int(11) NOT NULL,
+  `id_curso` int(11) NOT NULL,
+  `anio_lectivo` smallint(6) NOT NULL,
+  `estado` enum('INSCRIPTO','REGULAR','CONDICIONAL','LIBRE','EN_PASE','FINALIZADA') NOT NULL DEFAULT 'INSCRIPTO',
+  `fecha_inicio` date DEFAULT NULL,
+  `fecha_fin` date DEFAULT NULL,
+  `observacion` text DEFAULT NULL,
+  `registrado_por` int(11) DEFAULT NULL,
+  `creado_en` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `alumno_inscripcion`
+--
+
+INSERT INTO `alumno_inscripcion` (`id_inscripcion`, `id_usuario`, `id_curso`, `anio_lectivo`, `estado`, `fecha_inicio`, `fecha_fin`, `observacion`, `registrado_por`, `creado_en`) VALUES
+(1, 2, 1, 2026, 'INSCRIPTO', NULL, NULL, 'Migración inicial desde usuario.id_curso; revisar el historial previo.', NULL, '2026-11-12 04:23:02'),
+(2, 3, 1, 2026, 'INSCRIPTO', NULL, NULL, 'Migración inicial desde usuario.id_curso; revisar el historial previo.', NULL, '2026-11-12 04:23:02'),
+(3, 4, 1, 2026, 'INSCRIPTO', NULL, NULL, 'Migración inicial desde usuario.id_curso; revisar el historial previo.', NULL, '2026-11-12 04:23:02'),
+(4, 5, 1, 2026, 'INSCRIPTO', NULL, NULL, 'Migración inicial desde usuario.id_curso; revisar el historial previo.', NULL, '2026-11-12 04:23:02'),
+(5, 6, 1, 2026, 'INSCRIPTO', NULL, NULL, 'Migración inicial desde usuario.id_curso; revisar el historial previo.', NULL, '2026-11-12 04:23:02'),
+(6, 7, 1, 2026, 'INSCRIPTO', NULL, NULL, 'Migración inicial desde usuario.id_curso; revisar el historial previo.', NULL, '2026-11-12 04:23:02'),
+(7, 8, 1, 2026, 'INSCRIPTO', NULL, NULL, 'Migración inicial desde usuario.id_curso; revisar el historial previo.', NULL, '2026-11-12 04:23:02'),
+(8, 9, 1, 2026, 'INSCRIPTO', NULL, NULL, 'Migración inicial desde usuario.id_curso; revisar el historial previo.', NULL, '2026-11-12 04:23:02'),
+(9, 10, 1, 2026, 'INSCRIPTO', NULL, NULL, 'Migración inicial desde usuario.id_curso; revisar el historial previo.', NULL, '2026-11-12 04:23:02'),
+(10, 11, 1, 2026, 'INSCRIPTO', NULL, NULL, 'Migración inicial desde usuario.id_curso; revisar el historial previo.', NULL, '2026-11-12 04:23:02'),
+(11, 12, 1, 2026, 'INSCRIPTO', NULL, NULL, 'Migración inicial desde usuario.id_curso; revisar el historial previo.', NULL, '2026-11-12 04:23:02'),
+(12, 13, 1, 2026, 'INSCRIPTO', NULL, NULL, 'Migración inicial desde usuario.id_curso; revisar el historial previo.', NULL, '2026-11-12 04:23:02'),
+(13, 14, 1, 2026, 'INSCRIPTO', NULL, NULL, 'Migración inicial desde usuario.id_curso; revisar el historial previo.', NULL, '2026-11-12 04:23:02'),
+(14, 15, 1, 2026, 'INSCRIPTO', NULL, NULL, 'Migración inicial desde usuario.id_curso; revisar el historial previo.', NULL, '2026-11-12 04:23:02'),
+(15, 16, 1, 2026, 'INSCRIPTO', NULL, NULL, 'Migración inicial desde usuario.id_curso; revisar el historial previo.', NULL, '2026-11-12 04:23:02'),
+(16, 17, 1, 2026, 'INSCRIPTO', NULL, NULL, 'Migración inicial desde usuario.id_curso; revisar el historial previo.', NULL, '2026-11-12 04:23:02'),
+(17, 18, 1, 2026, 'INSCRIPTO', NULL, NULL, 'Migración inicial desde usuario.id_curso; revisar el historial previo.', NULL, '2026-11-12 04:23:02'),
+(18, 19, 1, 2026, 'INSCRIPTO', NULL, NULL, 'Migración inicial desde usuario.id_curso; revisar el historial previo.', NULL, '2026-11-12 04:23:02'),
+(19, 20, 1, 2026, 'INSCRIPTO', NULL, NULL, 'Migración inicial desde usuario.id_curso; revisar el historial previo.', NULL, '2026-11-12 04:23:02'),
+(20, 48244151, 1, 2026, 'INSCRIPTO', NULL, NULL, 'Migración inicial desde usuario.id_curso; revisar el historial previo.', NULL, '2026-11-12 04:23:02'),
+(21, 48302810, 1, 2026, 'INSCRIPTO', NULL, NULL, 'Migración inicial desde usuario.id_curso; revisar el historial previo.', NULL, '2026-11-12 04:23:02');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `alumno_trayectoria`
+--
+
+CREATE TABLE `alumno_trayectoria` (
+  `id_movimiento` bigint(20) UNSIGNED NOT NULL,
+  `id_usuario` int(11) NOT NULL,
+  `tipo` varchar(60) NOT NULL,
+  `estado_anterior` varchar(60) DEFAULT NULL,
+  `estado_nuevo` varchar(60) NOT NULL,
+  `fecha_efectiva` date NOT NULL,
+  `motivo` varchar(180) DEFAULT NULL,
+  `observacion` text DEFAULT NULL,
+  `id_curso_origen` int(11) DEFAULT NULL,
+  `id_curso_destino` int(11) DEFAULT NULL,
+  `registrado_por` int(11) DEFAULT NULL,
+  `creado_en` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `alumno_trayectoria`
+--
+
+INSERT INTO `alumno_trayectoria` (`id_movimiento`, `id_usuario`, `tipo`, `estado_anterior`, `estado_nuevo`, `fecha_efectiva`, `motivo`, `observacion`, `id_curso_origen`, `id_curso_destino`, `registrado_por`, `creado_en`) VALUES
+(1, 2, 'MIGRACION', NULL, 'INSCRIPTO', '2026-11-12', 'Migración inicial', 'Situación inicial pendiente de verificación; no se infiere del estado de la cuenta de acceso.', NULL, NULL, NULL, '2026-11-12 04:23:02'),
+(2, 3, 'MIGRACION', NULL, 'INSCRIPTO', '2026-11-12', 'Migración inicial', 'Situación inicial pendiente de verificación; no se infiere del estado de la cuenta de acceso.', NULL, NULL, NULL, '2026-11-12 04:23:02'),
+(3, 4, 'MIGRACION', NULL, 'INSCRIPTO', '2026-11-12', 'Migración inicial', 'Situación inicial pendiente de verificación; no se infiere del estado de la cuenta de acceso.', NULL, NULL, NULL, '2026-11-12 04:23:02'),
+(4, 5, 'MIGRACION', NULL, 'INSCRIPTO', '2026-11-12', 'Migración inicial', 'Situación inicial pendiente de verificación; no se infiere del estado de la cuenta de acceso.', NULL, NULL, NULL, '2026-11-12 04:23:02'),
+(5, 6, 'MIGRACION', NULL, 'INSCRIPTO', '2026-11-12', 'Migración inicial', 'Situación inicial pendiente de verificación; no se infiere del estado de la cuenta de acceso.', NULL, NULL, NULL, '2026-11-12 04:23:02'),
+(6, 7, 'MIGRACION', NULL, 'INSCRIPTO', '2026-11-12', 'Migración inicial', 'Situación inicial pendiente de verificación; no se infiere del estado de la cuenta de acceso.', NULL, NULL, NULL, '2026-11-12 04:23:02'),
+(7, 8, 'MIGRACION', NULL, 'INSCRIPTO', '2026-11-12', 'Migración inicial', 'Situación inicial pendiente de verificación; no se infiere del estado de la cuenta de acceso.', NULL, NULL, NULL, '2026-11-12 04:23:02'),
+(8, 9, 'MIGRACION', NULL, 'INSCRIPTO', '2026-11-12', 'Migración inicial', 'Situación inicial pendiente de verificación; no se infiere del estado de la cuenta de acceso.', NULL, NULL, NULL, '2026-11-12 04:23:02'),
+(9, 10, 'MIGRACION', NULL, 'INSCRIPTO', '2026-11-12', 'Migración inicial', 'Situación inicial pendiente de verificación; no se infiere del estado de la cuenta de acceso.', NULL, NULL, NULL, '2026-11-12 04:23:02'),
+(10, 11, 'MIGRACION', NULL, 'INSCRIPTO', '2026-11-12', 'Migración inicial', 'Situación inicial pendiente de verificación; no se infiere del estado de la cuenta de acceso.', NULL, NULL, NULL, '2026-11-12 04:23:02'),
+(11, 12, 'MIGRACION', NULL, 'INSCRIPTO', '2026-11-12', 'Migración inicial', 'Situación inicial pendiente de verificación; no se infiere del estado de la cuenta de acceso.', NULL, NULL, NULL, '2026-11-12 04:23:02'),
+(12, 13, 'MIGRACION', NULL, 'INSCRIPTO', '2026-11-12', 'Migración inicial', 'Situación inicial pendiente de verificación; no se infiere del estado de la cuenta de acceso.', NULL, NULL, NULL, '2026-11-12 04:23:02'),
+(13, 14, 'MIGRACION', NULL, 'INSCRIPTO', '2026-11-12', 'Migración inicial', 'Situación inicial pendiente de verificación; no se infiere del estado de la cuenta de acceso.', NULL, NULL, NULL, '2026-11-12 04:23:02'),
+(14, 15, 'MIGRACION', NULL, 'INSCRIPTO', '2026-11-12', 'Migración inicial', 'Situación inicial pendiente de verificación; no se infiere del estado de la cuenta de acceso.', NULL, NULL, NULL, '2026-11-12 04:23:02'),
+(15, 16, 'MIGRACION', NULL, 'INSCRIPTO', '2026-11-12', 'Migración inicial', 'Situación inicial pendiente de verificación; no se infiere del estado de la cuenta de acceso.', NULL, NULL, NULL, '2026-11-12 04:23:02'),
+(16, 17, 'MIGRACION', NULL, 'INSCRIPTO', '2026-11-12', 'Migración inicial', 'Situación inicial pendiente de verificación; no se infiere del estado de la cuenta de acceso.', NULL, NULL, NULL, '2026-11-12 04:23:02'),
+(17, 18, 'MIGRACION', NULL, 'INSCRIPTO', '2026-11-12', 'Migración inicial', 'Situación inicial pendiente de verificación; no se infiere del estado de la cuenta de acceso.', NULL, NULL, NULL, '2026-11-12 04:23:02'),
+(18, 19, 'MIGRACION', NULL, 'INSCRIPTO', '2026-11-12', 'Migración inicial', 'Situación inicial pendiente de verificación; no se infiere del estado de la cuenta de acceso.', NULL, NULL, NULL, '2026-11-12 04:23:02'),
+(19, 20, 'MIGRACION', NULL, 'INSCRIPTO', '2026-11-12', 'Migración inicial', 'Situación inicial pendiente de verificación; no se infiere del estado de la cuenta de acceso.', NULL, NULL, NULL, '2026-11-12 04:23:02'),
+(20, 48244151, 'MIGRACION', NULL, 'INSCRIPTO', '2026-11-12', 'Migración inicial', 'Situación inicial pendiente de verificación; no se infiere del estado de la cuenta de acceso.', NULL, NULL, NULL, '2026-11-12 04:23:02'),
+(21, 48302810, 'MIGRACION', NULL, 'INSCRIPTO', '2026-11-12', 'Migración inicial', 'Situación inicial pendiente de verificación; no se infiere del estado de la cuenta de acceso.', NULL, NULL, NULL, '2026-11-12 04:23:02');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `alumno_tutor`
+--
+
+CREATE TABLE `alumno_tutor` (
+  `id_alumno_tutor` bigint(20) UNSIGNED NOT NULL,
+  `id_alumno` int(11) NOT NULL,
+  `id_tutor` int(11) NOT NULL,
+  `parentesco` varchar(50) NOT NULL DEFAULT 'Tutor responsable',
+  `observacion` varchar(255) DEFAULT NULL,
+  `activo` tinyint(1) NOT NULL DEFAULT 1,
+  `creado_por` int(11) DEFAULT NULL,
+  `creado_en` timestamp NOT NULL DEFAULT current_timestamp(),
+  `actualizado_en` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -48,6 +199,25 @@ CREATE TABLE `asistencia_detalle` (
   `id_rol_usuario` int(11) NOT NULL,
   `id_usuario_responsable` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `auditoria_permiso`
+--
+
+CREATE TABLE `auditoria_permiso` (
+  `id_auditoria` bigint(20) UNSIGNED NOT NULL,
+  `id_usuario_afectado` int(11) DEFAULT NULL,
+  `id_permiso` int(10) UNSIGNED DEFAULT NULL,
+  `accion` varchar(40) NOT NULL,
+  `efecto` varchar(12) DEFAULT NULL,
+  `id_actor` int(11) DEFAULT NULL,
+  `motivo` text DEFAULT NULL,
+  `referencia_tipo` varchar(40) DEFAULT NULL,
+  `referencia_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `fecha` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -358,6 +528,41 @@ CREATE TABLE `faltas` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `gestion_auditoria`
+--
+
+CREATE TABLE `gestion_auditoria` (
+  `id_evento` bigint(20) UNSIGNED NOT NULL,
+  `dominio` enum('PERSONAL','ALUMNO') NOT NULL,
+  `entidad` varchar(80) NOT NULL,
+  `entidad_id` bigint(20) UNSIGNED NOT NULL,
+  `accion` varchar(80) NOT NULL,
+  `detalle` text DEFAULT NULL,
+  `id_actor` int(11) DEFAULT NULL,
+  `creado_en` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `gestion_notificacion`
+--
+
+CREATE TABLE `gestion_notificacion` (
+  `id_notificacion` bigint(20) UNSIGNED NOT NULL,
+  `id_usuario_destino` int(11) NOT NULL,
+  `tipo` varchar(80) NOT NULL,
+  `titulo` varchar(180) NOT NULL,
+  `mensaje` text NOT NULL,
+  `referencia_tipo` varchar(80) DEFAULT NULL,
+  `referencia_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `leida_en` datetime DEFAULT NULL,
+  `creada_en` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `horarios`
 --
 
@@ -518,6 +723,257 @@ INSERT INTO `orientacion` (`id_orientacion`, `nombre`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `permiso`
+--
+
+CREATE TABLE `permiso` (
+  `id_permiso` int(10) UNSIGNED NOT NULL,
+  `codigo` varchar(100) NOT NULL,
+  `nombre` varchar(140) NOT NULL,
+  `modulo` varchar(60) NOT NULL,
+  `descripcion` text DEFAULT NULL,
+  `sensible` tinyint(1) NOT NULL DEFAULT 0,
+  `solicitable` tinyint(1) NOT NULL DEFAULT 1,
+  `implementado` tinyint(1) NOT NULL DEFAULT 0,
+  `activo` tinyint(1) NOT NULL DEFAULT 1,
+  `creado_en` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `permiso`
+--
+
+INSERT INTO `permiso` (`id_permiso`, `codigo`, `nombre`, `modulo`, `descripcion`, `sensible`, `solicitable`, `implementado`, `activo`, `creado_en`) VALUES
+(1, 'examen.ver', 'Consultar exámenes', 'examenes', 'Consultar exámenes', 0, 1, 0, 1, '2026-11-12 03:03:24'),
+(2, 'examen.crear', 'Crear exámenes', 'examenes', 'Crear exámenes', 0, 1, 0, 1, '2026-11-12 03:03:24'),
+(3, 'examen.editar', 'Editar exámenes', 'examenes', 'Editar exámenes', 0, 1, 0, 1, '2026-11-12 03:03:24'),
+(4, 'examen.asignar', 'Asignar exámenes', 'examenes', 'Asignar exámenes', 0, 1, 0, 1, '2026-11-12 03:03:24'),
+(5, 'examen.registrar_resultado', 'Registrar resultados', 'examenes', 'Registrar resultados', 0, 1, 0, 1, '2026-11-12 03:03:24'),
+(6, 'examen.cerrar', 'Cerrar exámenes', 'examenes', 'Cerrar exámenes', 0, 1, 0, 1, '2026-11-12 03:03:24'),
+(7, 'nota.ver', 'Consultar calificaciones', 'notas', 'Consultar calificaciones', 0, 1, 1, 1, '2026-11-12 03:03:24'),
+(8, 'nota.solicitar_carga', 'Solicitar autorización de carga', 'notas', 'Solicitar autorización de carga', 0, 1, 1, 1, '2026-11-12 03:03:24'),
+(9, 'nota.cargar', 'Cargar calificaciones autorizadas', 'notas', 'Cargar calificaciones autorizadas', 0, 1, 1, 1, '2026-11-12 03:03:24'),
+(10, 'nota.editar_borrador', 'Editar calificaciones no aprobadas', 'notas', 'Editar calificaciones no aprobadas', 0, 1, 0, 1, '2026-11-12 03:03:24'),
+(11, 'nota.solicitar_modificacion', 'Solicitar modificación de nota aprobada', 'notas', 'Solicitar modificación de nota aprobada', 0, 1, 1, 1, '2026-11-12 03:03:24'),
+(12, 'nota.aprobar_carga', 'Aprobar cargas de calificaciones', 'notas', 'Aprobar cargas de calificaciones', 1, 0, 1, 1, '2026-11-12 03:03:24'),
+(13, 'nota.rechazar_carga', 'Rechazar cargas de calificaciones', 'notas', 'Rechazar cargas de calificaciones', 1, 0, 1, 1, '2026-11-12 03:03:24'),
+(14, 'nota.aprobar_modificacion', 'Aprobar modificaciones de notas', 'notas', 'Aprobar modificaciones de notas', 1, 0, 1, 1, '2026-11-12 03:03:24'),
+(15, 'nota.rechazar_modificacion', 'Rechazar modificaciones de notas', 'notas', 'Rechazar modificaciones de notas', 1, 0, 1, 1, '2026-11-12 03:03:24'),
+(16, 'nota.publicar', 'Publicar calificaciones', 'notas', 'Publicar calificaciones', 0, 1, 0, 1, '2026-11-12 03:03:24'),
+(17, 'nota.anular', 'Anular calificaciones', 'notas', 'Anular calificaciones', 0, 1, 0, 1, '2026-11-12 03:03:24'),
+(18, 'asistencia.ver', 'Consultar asistencias', 'asistencias', 'Consultar asistencias', 0, 1, 1, 1, '2026-11-12 03:03:24'),
+(19, 'asistencia.tomar', 'Registrar asistencia', 'asistencias', 'Registrar asistencia', 0, 1, 1, 1, '2026-11-12 03:03:24'),
+(20, 'asistencia.modificar_propia', 'Modificar registros propios', 'asistencias', 'Modificar registros propios', 0, 1, 1, 1, '2026-11-12 03:03:24'),
+(21, 'asistencia.modificar_ajena', 'Modificar registros de otros usuarios', 'asistencias', 'Modificar registros de otros usuarios', 1, 0, 1, 1, '2026-11-12 03:03:24'),
+(22, 'asistencia.justificar', 'Registrar justificaciones', 'asistencias', 'Registrar justificaciones', 0, 1, 0, 1, '2026-11-12 03:03:24'),
+(23, 'asistencia.aprobar_justificacion', 'Aprobar justificaciones', 'asistencias', 'Aprobar justificaciones', 1, 0, 0, 1, '2026-11-12 03:03:24'),
+(24, 'asistencia.anular', 'Anular registros de asistencia', 'asistencias', 'Anular registros de asistencia', 1, 0, 0, 1, '2026-11-12 03:03:24'),
+(25, 'asistencia.cerrar_periodo', 'Cerrar período de asistencia', 'asistencias', 'Cerrar período de asistencia', 0, 1, 0, 1, '2026-11-12 03:03:24'),
+(26, 'asistencia.reabrir_periodo', 'Reabrir período de asistencia', 'asistencias', 'Reabrir período de asistencia', 1, 0, 0, 1, '2026-11-12 03:03:24'),
+(27, 'asistencia.exportar', 'Exportar asistencias', 'asistencias', 'Exportar asistencias', 0, 1, 0, 1, '2026-11-12 03:03:24'),
+(28, 'alumno.ver', 'Consultar legajos', 'alumnos', 'Consultar legajos', 0, 1, 1, 1, '2026-11-12 03:03:24'),
+(29, 'alumno.ver_datos_sensibles', 'Consultar datos sensibles', 'alumnos', 'Consultar datos sensibles', 1, 0, 0, 1, '2026-11-12 03:03:24'),
+(30, 'alumno.crear', 'Crear legajos', 'alumnos', 'Crear legajos', 0, 1, 1, 1, '2026-11-12 03:03:24'),
+(31, 'alumno.editar_datos', 'Editar datos personales', 'alumnos', 'Editar datos personales', 0, 1, 1, 1, '2026-11-12 03:03:24'),
+(32, 'alumno.editar_academico', 'Editar datos académicos', 'alumnos', 'Editar datos académicos', 0, 1, 1, 1, '2026-11-12 03:03:24'),
+(33, 'alumno.dar_baja', 'Dar de baja alumnos', 'alumnos', 'Dar de baja alumnos', 0, 1, 1, 1, '2026-11-12 03:03:24'),
+(34, 'alumno.reactivar', 'Reactivar alumnos', 'alumnos', 'Reactivar alumnos', 0, 1, 1, 1, '2026-11-12 03:03:24'),
+(35, 'alumno.cambiar_curso', 'Cambiar alumnos de curso', 'alumnos', 'Cambiar alumnos de curso', 0, 1, 1, 1, '2026-11-12 03:03:24'),
+(36, 'alumno.inscribir', 'Inscribir alumnos', 'alumnos', 'Inscribir alumnos', 0, 1, 0, 1, '2026-11-12 03:03:24'),
+(37, 'alumno.exportar', 'Exportar legajos', 'alumnos', 'Exportar legajos', 0, 1, 1, 1, '2026-11-12 03:03:24'),
+(38, 'personal.ver', 'Consultar personal', 'personal', 'Consultar personal', 0, 1, 0, 1, '2026-11-12 03:03:24'),
+(39, 'personal.crear', 'Crear personal', 'personal', 'Crear personal', 0, 1, 0, 1, '2026-11-12 03:03:24'),
+(40, 'personal.editar', 'Editar personal', 'personal', 'Editar personal', 0, 1, 0, 1, '2026-11-12 03:03:24'),
+(41, 'personal.activar', 'Activar usuarios', 'personal', 'Activar usuarios', 0, 1, 0, 1, '2026-11-12 03:03:24'),
+(42, 'personal.desactivar', 'Desactivar usuarios', 'personal', 'Desactivar usuarios', 0, 1, 0, 1, '2026-11-12 03:03:24'),
+(43, 'personal.asignar_rol', 'Asignar roles', 'personal', 'Asignar roles', 1, 0, 0, 1, '2026-11-12 03:03:24'),
+(44, 'personal.cambiar_rol', 'Cambiar roles', 'personal', 'Cambiar roles', 1, 0, 0, 1, '2026-11-12 03:03:24'),
+(45, 'personal.resetear_credenciales', 'Restablecer credenciales', 'personal', 'Restablecer credenciales', 0, 1, 0, 1, '2026-11-12 03:03:24'),
+(46, 'personal.ver_asignaciones', 'Consultar asignaciones docentes', 'personal', 'Consultar asignaciones docentes', 0, 1, 0, 1, '2026-11-12 03:03:24'),
+(47, 'asignacion.ver', 'Consultar asignaciones', 'asignaciones', 'Consultar asignaciones', 0, 1, 1, 1, '2026-11-12 03:03:24'),
+(48, 'asignacion.crear', 'Asignar docentes a cursos y materias', 'asignaciones', 'Asignar docentes a cursos y materias', 0, 1, 1, 1, '2026-11-12 03:03:24'),
+(49, 'asignacion.desactivar', 'Desactivar asignaciones docentes', 'asignaciones', 'Desactivar asignaciones docentes', 0, 1, 1, 1, '2026-11-12 03:03:24'),
+(50, 'curso.ver', 'Consultar cursos', 'estructura', 'Consultar cursos', 0, 1, 0, 1, '2026-11-12 03:03:24'),
+(51, 'curso.crear', 'Crear cursos', 'estructura', 'Crear cursos', 0, 1, 0, 1, '2026-11-12 03:03:24'),
+(52, 'curso.editar', 'Editar cursos', 'estructura', 'Editar cursos', 0, 1, 0, 1, '2026-11-12 03:03:24'),
+(53, 'curso.cerrar', 'Cerrar cursos', 'estructura', 'Cerrar cursos', 0, 1, 0, 1, '2026-11-12 03:03:24'),
+(54, 'materia.ver', 'Consultar materias', 'estructura', 'Consultar materias', 0, 1, 1, 1, '2026-11-12 03:03:24'),
+(55, 'materia.crear', 'Crear materias', 'estructura', 'Crear materias', 0, 1, 1, 1, '2026-11-12 03:03:24'),
+(56, 'materia.editar', 'Editar materias', 'estructura', 'Editar materias', 0, 1, 1, 1, '2026-11-12 03:03:24'),
+(57, 'plan.ver', 'Consultar planes de estudio', 'planes', 'Consultar planes de estudio', 0, 1, 1, 1, '2026-11-12 03:03:24'),
+(58, 'plan.crear', 'Crear planes de estudio', 'planes', 'Crear planes de estudio', 0, 1, 1, 1, '2026-11-12 03:03:24'),
+(59, 'plan.editar', 'Editar planes de estudio', 'planes', 'Editar planes de estudio', 0, 1, 1, 1, '2026-11-12 03:03:24'),
+(60, 'plan.aprobar', 'Aprobar planes de estudio', 'planes', 'Aprobar planes de estudio', 0, 1, 0, 1, '2026-11-12 03:03:24'),
+(61, 'plan.archivar', 'Archivar planes de estudio', 'planes', 'Archivar planes de estudio', 0, 1, 1, 1, '2026-11-12 03:03:24'),
+(62, 'horario.ver', 'Consultar horarios', 'horarios', 'Consultar horarios', 0, 1, 0, 1, '2026-11-12 03:03:24'),
+(63, 'horario.editar', 'Editar horarios', 'horarios', 'Editar horarios', 0, 1, 0, 1, '2026-11-12 03:03:24'),
+(64, 'solicitud.ver_propia', 'Consultar solicitudes propias', 'solicitudes', 'Consultar solicitudes propias', 0, 1, 0, 1, '2026-11-12 03:03:24'),
+(65, 'solicitud.ver_todas', 'Consultar solicitudes institucionales', 'solicitudes', 'Consultar solicitudes institucionales', 0, 1, 0, 1, '2026-11-12 03:03:24'),
+(66, 'solicitud.crear', 'Crear solicitudes', 'solicitudes', 'Crear solicitudes', 0, 1, 0, 1, '2026-11-12 03:03:24'),
+(67, 'solicitud.aprobar', 'Aprobar solicitudes', 'solicitudes', 'Aprobar solicitudes', 0, 1, 0, 1, '2026-11-12 03:03:24'),
+(68, 'solicitud.rechazar', 'Rechazar solicitudes', 'solicitudes', 'Rechazar solicitudes', 0, 1, 0, 1, '2026-11-12 03:03:24'),
+(69, 'solicitud.cancelar_propia', 'Cancelar solicitudes propias', 'solicitudes', 'Cancelar solicitudes propias', 0, 1, 0, 1, '2026-11-12 03:03:24'),
+(70, 'solicitud.revocar_autorizacion', 'Revocar autorizaciones', 'solicitudes', 'Revocar autorizaciones', 0, 1, 0, 1, '2026-11-12 03:03:24'),
+(71, 'rol.ver', 'Consultar roles', 'seguridad', 'Consultar roles', 1, 0, 0, 1, '2026-11-12 03:03:24'),
+(72, 'rol.crear', 'Crear roles', 'seguridad', 'Crear roles', 1, 0, 0, 1, '2026-11-12 03:03:24'),
+(73, 'rol.editar', 'Editar roles', 'seguridad', 'Editar roles', 1, 0, 0, 1, '2026-11-12 03:03:24'),
+(74, 'rol.desactivar', 'Desactivar roles', 'seguridad', 'Desactivar roles', 1, 0, 0, 1, '2026-11-12 03:03:24'),
+(75, 'permiso.ver_catalogo', 'Consultar catálogo de permisos', 'seguridad', 'Consultar catálogo de permisos', 1, 0, 1, 1, '2026-11-12 03:03:24'),
+(76, 'permiso.editar_base', 'Administrar permisos base de roles', 'seguridad', 'Administrar permisos base de roles', 1, 0, 1, 1, '2026-11-12 03:03:24'),
+(77, 'permiso.solicitar', 'Solicitar permisos individuales', 'seguridad', 'Solicitar permisos individuales', 1, 0, 1, 1, '2026-11-12 03:03:24'),
+(78, 'permiso.aprobar', 'Aprobar permisos individuales', 'seguridad', 'Aprobar permisos individuales', 1, 0, 1, 1, '2026-11-12 03:03:24'),
+(79, 'permiso.revocar', 'Revocar permisos individuales', 'seguridad', 'Revocar permisos individuales', 1, 0, 1, 1, '2026-11-12 03:03:24'),
+(80, 'auditoria.ver', 'Consultar auditoría', 'seguridad', 'Consultar auditoría', 1, 0, 0, 1, '2026-11-12 03:03:24'),
+(81, 'auditoria.exportar', 'Exportar auditoría', 'seguridad', 'Exportar auditoría', 1, 0, 0, 1, '2026-11-12 03:03:24'),
+(82, 'configuracion.ver', 'Consultar configuración', 'configuracion', 'Consultar configuración', 0, 1, 0, 1, '2026-11-12 03:03:24'),
+(83, 'configuracion.editar', 'Modificar configuración', 'configuracion', 'Modificar configuración', 0, 1, 0, 1, '2026-11-12 03:03:24'),
+(84, 'personal.vinculo.ver', 'Consultar vínculos laborales', 'Personal', 'Consultar vínculos institucionales del personal.', 0, 1, 1, 1, '2026-11-12 04:23:02'),
+(85, 'personal.vinculo.crear', 'Crear vínculos laborales', 'Personal', 'Registrar vínculos institucionales del personal.', 0, 1, 1, 1, '2026-11-12 04:23:02'),
+(86, 'personal.vinculo.finalizar', 'Finalizar vínculos laborales', 'Personal', 'Finalizar vínculos sin eliminar el historial.', 1, 0, 1, 1, '2026-11-12 04:23:02'),
+(87, 'personal.designacion.gestionar', 'Gestionar designaciones', 'Personal', 'Crear y finalizar cargos y funciones.', 1, 0, 1, 1, '2026-11-12 04:23:02'),
+(88, 'personal.situacion.gestionar', 'Gestionar situaciones laborales', 'Personal', 'Registrar licencias, actividad y otras situaciones.', 1, 0, 1, 1, '2026-11-12 04:23:02'),
+(89, 'personal.cobertura.gestionar', 'Gestionar coberturas', 'Personal', 'Registrar suplencias y reemplazos vinculados a designaciones.', 1, 0, 0, 1, '2026-11-12 04:23:02'),
+(90, 'alumno.trayectoria.ver', 'Consultar trayectoria estudiantil', 'Alumnos', 'Consultar movimientos e historial académico-administrativo.', 0, 1, 1, 1, '2026-11-12 04:23:02'),
+(91, 'alumno.trayectoria.gestionar', 'Gestionar trayectoria estudiantil', 'Alumnos', 'Registrar movimientos y cambios de situación.', 1, 0, 1, 1, '2026-11-12 04:23:02'),
+(92, 'alumno.egreso.registrar', 'Registrar egresos', 'Alumnos', 'Registrar un egreso con validación académica institucional.', 1, 0, 1, 1, '2026-11-12 04:23:02'),
+(93, 'alumno.disciplinario.gestionar', 'Gestionar actuaciones disciplinarias', 'Alumnos', 'Registrar actuaciones y resoluciones disciplinarias.', 1, 0, 1, 1, '2026-11-12 04:23:02'),
+(94, 'familia.ver', 'Consultar portal familiar', 'Familia', 'Consultar únicamente los alumnos vinculados al usuario tutor.', 0, 0, 1, 1, '2026-11-12 18:50:29'),
+(95, 'familia.vinculos.gestionar', 'Gestionar vínculos familiares', 'Familia', 'Crear, desactivar y consultar relaciones verificadas entre tutores y alumnos.', 1, 0, 1, 1, '2026-11-12 18:50:29');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `personal_cargo`
+--
+
+CREATE TABLE `personal_cargo` (
+  `id_cargo` int(10) UNSIGNED NOT NULL,
+  `codigo` varchar(60) NOT NULL,
+  `nombre` varchar(120) NOT NULL,
+  `categoria` enum('DOCENTE','NO_DOCENTE','DIRECTIVO','OTRO') NOT NULL DEFAULT 'OTRO',
+  `activo` tinyint(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `personal_cargo`
+--
+
+INSERT INTO `personal_cargo` (`id_cargo`, `codigo`, `nombre`, `categoria`, `activo`) VALUES
+(1, 'PROFESOR', 'Profesor', 'DOCENTE', 1),
+(2, 'PRECEPTOR', 'Preceptor', 'NO_DOCENTE', 1),
+(3, 'DIRECTIVO', 'Directivo', 'DIRECTIVO', 1),
+(4, 'SECRETARIO', 'Secretario', 'NO_DOCENTE', 1),
+(5, 'ADMINISTRATIVO', 'Administrativo', 'NO_DOCENTE', 1),
+(6, 'JEFE_DEPARTAMENTO', 'Jefe de departamento', 'DOCENTE', 1),
+(7, 'AUXILIAR', 'Auxiliar', 'NO_DOCENTE', 1),
+(8, 'OTRO', 'Otro cargo', 'OTRO', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `personal_cobertura`
+--
+
+CREATE TABLE `personal_cobertura` (
+  `id_cobertura` bigint(20) UNSIGNED NOT NULL,
+  `id_designacion_origen` bigint(20) UNSIGNED NOT NULL,
+  `id_designacion_cobertura` bigint(20) UNSIGNED NOT NULL,
+  `id_asignacion_docente` int(11) DEFAULT NULL,
+  `id_curso_horario` int(11) DEFAULT NULL,
+  `fecha_inicio` date NOT NULL,
+  `fecha_fin_prevista` date DEFAULT NULL,
+  `fecha_fin_real` date DEFAULT NULL,
+  `motivo` varchar(160) DEFAULT NULL,
+  `estado` enum('VIGENTE','FINALIZADA','CANCELADA') NOT NULL DEFAULT 'VIGENTE',
+  `creado_por` int(11) DEFAULT NULL,
+  `creado_en` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `personal_designacion`
+--
+
+CREATE TABLE `personal_designacion` (
+  `id_designacion` bigint(20) UNSIGNED NOT NULL,
+  `id_vinculo` bigint(20) UNSIGNED NOT NULL,
+  `id_cargo` int(10) UNSIGNED NOT NULL,
+  `modalidad` varchar(80) NOT NULL DEFAULT 'Sin especificar',
+  `fecha_inicio` date DEFAULT NULL,
+  `fecha_fin` date DEFAULT NULL,
+  `estado` enum('VIGENTE','FINALIZADA') NOT NULL DEFAULT 'VIGENTE',
+  `observacion` text DEFAULT NULL,
+  `creado_por` int(11) DEFAULT NULL,
+  `creado_en` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `personal_designacion`
+--
+
+INSERT INTO `personal_designacion` (`id_designacion`, `id_vinculo`, `id_cargo`, `modalidad`, `fecha_inicio`, `fecha_fin`, `estado`, `observacion`, `creado_por`, `creado_en`) VALUES
+(1, 1, 1, 'Designación preexistente', NULL, NULL, 'VIGENTE', 'Migración inicial inferida del rol actual; fecha y modalidad deben verificarse documentalmente.', NULL, '2026-11-12 04:23:02'),
+(2, 2, 1, 'Designación preexistente', NULL, NULL, 'VIGENTE', 'Migración inicial inferida del rol actual; fecha y modalidad deben verificarse documentalmente.', NULL, '2026-11-12 04:23:02'),
+(3, 3, 2, 'Designación preexistente', NULL, NULL, 'VIGENTE', 'Migración inicial inferida del rol actual; fecha y modalidad deben verificarse documentalmente.', NULL, '2026-11-12 04:23:02');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `personal_situacion`
+--
+
+CREATE TABLE `personal_situacion` (
+  `id_situacion` bigint(20) UNSIGNED NOT NULL,
+  `id_vinculo` bigint(20) UNSIGNED NOT NULL,
+  `id_designacion` bigint(20) UNSIGNED DEFAULT NULL,
+  `situacion` varchar(80) NOT NULL,
+  `motivo` varchar(160) DEFAULT NULL,
+  `fecha_inicio` date DEFAULT NULL,
+  `fecha_fin_prevista` date DEFAULT NULL,
+  `fecha_fin_real` date DEFAULT NULL,
+  `observacion` text DEFAULT NULL,
+  `registrado_por` int(11) DEFAULT NULL,
+  `registrado_en` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `personal_situacion`
+--
+
+INSERT INTO `personal_situacion` (`id_situacion`, `id_vinculo`, `id_designacion`, `situacion`, `motivo`, `fecha_inicio`, `fecha_fin_prevista`, `fecha_fin_real`, `observacion`, `registrado_por`, `registrado_en`) VALUES
+(1, 1, NULL, 'SITUACION_NO_VERIFICADA', NULL, NULL, NULL, NULL, 'La situación laboral no se puede inferir del rol de acceso; verificar con legajo laboral.', NULL, '2026-11-12 04:23:02'),
+(2, 2, NULL, 'SITUACION_NO_VERIFICADA', NULL, NULL, NULL, NULL, 'La situación laboral no se puede inferir del rol de acceso; verificar con legajo laboral.', NULL, '2026-11-12 04:23:02'),
+(3, 3, NULL, 'SITUACION_NO_VERIFICADA', NULL, NULL, NULL, NULL, 'La situación laboral no se puede inferir del rol de acceso; verificar con legajo laboral.', NULL, '2026-11-12 04:23:02');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `personal_vinculo`
+--
+
+CREATE TABLE `personal_vinculo` (
+  `id_vinculo` bigint(20) UNSIGNED NOT NULL,
+  `id_usuario` int(11) NOT NULL,
+  `fecha_inicio` date DEFAULT NULL,
+  `fecha_fin` date DEFAULT NULL,
+  `observacion` text DEFAULT NULL,
+  `creado_por` int(11) DEFAULT NULL,
+  `creado_en` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `personal_vinculo`
+--
+
+INSERT INTO `personal_vinculo` (`id_vinculo`, `id_usuario`, `fecha_inicio`, `fecha_fin`, `observacion`, `creado_por`, `creado_en`) VALUES
+(1, 3, NULL, NULL, 'Vínculo preexistente inferido del rol; fecha de inicio desconocida, completar con documentación institucional.', NULL, '2026-11-12 04:23:02'),
+(2, 48302809, NULL, NULL, 'Vínculo preexistente inferido del rol; fecha de inicio desconocida, completar con documentación institucional.', NULL, '2026-11-12 04:23:02'),
+(3, 4, NULL, NULL, 'Vínculo preexistente inferido del rol; fecha de inicio desconocida, completar con documentación institucional.', NULL, '2026-11-12 04:23:02');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `plan_estudio`
 --
 
@@ -625,7 +1081,108 @@ INSERT INTO `rol` (`id_rol`, `nombre`, `id_rol_usuario`, `p_mod_notas`, `p_asist
 (2, 'Profesor', 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0),
 (3, 'Preceptor', 2, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0),
 (4, 'Alumno', 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
-(5, 'Invitado', 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+(5, 'Invitado', 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(6, 'Directivo', 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(7, 'Padre/Tutor', 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `rol_permiso`
+--
+
+CREATE TABLE `rol_permiso` (
+  `id_rol` int(11) NOT NULL,
+  `id_permiso` int(10) UNSIGNED NOT NULL,
+  `permitido` tinyint(1) NOT NULL DEFAULT 1,
+  `actualizado_por` int(11) DEFAULT NULL,
+  `actualizado_en` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `rol_permiso`
+--
+
+INSERT INTO `rol_permiso` (`id_rol`, `id_permiso`, `permitido`, `actualizado_por`, `actualizado_en`) VALUES
+(1, 7, 1, NULL, '2026-11-12 03:03:24'),
+(1, 8, 1, NULL, '2026-11-12 03:03:24'),
+(1, 9, 1, NULL, '2026-11-12 03:03:24'),
+(1, 11, 1, NULL, '2026-11-12 03:03:24'),
+(1, 12, 1, NULL, '2026-11-12 03:03:24'),
+(1, 13, 1, NULL, '2026-11-12 03:03:24'),
+(1, 14, 1, NULL, '2026-11-12 03:03:24'),
+(1, 15, 1, NULL, '2026-11-12 03:03:24'),
+(1, 18, 1, NULL, '2026-11-12 03:03:24'),
+(1, 19, 1, NULL, '2026-11-12 03:03:24'),
+(1, 28, 1, NULL, '2026-11-12 03:03:24'),
+(1, 30, 1, NULL, '2026-11-12 03:03:24'),
+(1, 31, 1, NULL, '2026-11-12 03:03:24'),
+(1, 32, 1, NULL, '2026-11-12 03:03:24'),
+(1, 33, 1, NULL, '2026-11-12 03:03:24'),
+(1, 34, 1, NULL, '2026-11-12 03:03:24'),
+(1, 38, 1, NULL, '2026-11-12 03:03:24'),
+(1, 39, 1, NULL, '2026-11-12 03:03:24'),
+(1, 40, 1, NULL, '2026-11-12 03:03:24'),
+(1, 41, 1, NULL, '2026-11-12 03:03:24'),
+(1, 42, 1, NULL, '2026-11-12 03:03:24'),
+(1, 43, 1, NULL, '2026-11-12 03:03:24'),
+(1, 44, 1, NULL, '2026-11-12 03:03:24'),
+(1, 47, 1, NULL, '2026-11-12 03:03:24'),
+(1, 48, 1, NULL, '2026-11-12 03:03:24'),
+(1, 49, 1, NULL, '2026-11-12 03:03:24'),
+(1, 54, 1, NULL, '2026-11-12 03:03:24'),
+(1, 55, 1, NULL, '2026-11-12 03:03:24'),
+(1, 56, 1, NULL, '2026-11-12 03:03:24'),
+(1, 57, 1, NULL, '2026-11-12 03:03:24'),
+(1, 58, 1, NULL, '2026-11-12 03:03:24'),
+(1, 59, 1, NULL, '2026-11-12 03:03:24'),
+(1, 61, 1, NULL, '2026-11-12 03:03:24'),
+(1, 76, 1, NULL, '2026-11-12 03:03:24'),
+(1, 77, 1, NULL, '2026-11-12 03:03:24'),
+(2, 7, 1, NULL, '2026-11-12 03:03:24'),
+(2, 8, 1, NULL, '2026-11-12 03:03:24'),
+(2, 9, 1, NULL, '2026-11-12 03:03:24'),
+(2, 11, 1, NULL, '2026-11-12 03:03:24'),
+(2, 18, 1, NULL, '2026-11-12 03:03:24'),
+(2, 19, 1, NULL, '2026-11-12 03:03:24'),
+(2, 54, 1, NULL, '2026-11-12 03:03:24'),
+(2, 57, 1, NULL, '2026-11-12 03:03:24'),
+(2, 77, 1, NULL, '2026-11-12 03:03:24'),
+(3, 18, 1, NULL, '2026-11-12 03:03:24'),
+(3, 19, 1, NULL, '2026-11-12 03:03:24'),
+(3, 28, 1, NULL, '2026-11-12 03:03:24'),
+(3, 30, 1, NULL, '2026-11-12 03:03:24'),
+(3, 31, 1, NULL, '2026-11-12 03:03:24'),
+(3, 32, 1, NULL, '2026-11-12 03:03:24'),
+(3, 33, 1, NULL, '2026-11-12 03:03:24'),
+(3, 34, 1, NULL, '2026-11-12 03:03:24'),
+(3, 54, 1, NULL, '2026-11-12 03:03:24'),
+(3, 57, 1, NULL, '2026-11-12 03:03:24'),
+(3, 77, 1, NULL, '2026-11-12 03:03:24'),
+(4, 77, 1, NULL, '2026-11-12 03:03:24'),
+(5, 77, 1, NULL, '2026-11-12 03:03:24'),
+(6, 7, 1, NULL, '2026-11-12 03:03:24'),
+(6, 12, 1, NULL, '2026-11-12 03:03:24'),
+(6, 13, 1, NULL, '2026-11-12 03:03:24'),
+(6, 14, 1, NULL, '2026-11-12 03:03:24'),
+(6, 15, 1, NULL, '2026-11-12 03:03:24'),
+(6, 18, 1, NULL, '2026-11-12 03:03:24'),
+(6, 21, 1, NULL, '2026-11-12 03:03:24'),
+(6, 28, 1, NULL, '2026-11-12 03:03:24'),
+(6, 30, 1, NULL, '2026-11-12 03:03:24'),
+(6, 31, 1, NULL, '2026-11-12 03:03:24'),
+(6, 32, 1, NULL, '2026-11-12 03:03:24'),
+(6, 33, 1, NULL, '2026-11-12 03:03:24'),
+(6, 34, 1, NULL, '2026-11-12 03:03:24'),
+(6, 47, 1, NULL, '2026-11-12 03:03:24'),
+(6, 54, 1, NULL, '2026-11-12 03:03:24'),
+(6, 57, 1, NULL, '2026-11-12 03:03:24'),
+(6, 75, 1, NULL, '2026-11-12 03:03:24'),
+(6, 77, 1, NULL, '2026-11-12 03:03:24'),
+(6, 78, 1, NULL, '2026-11-12 03:03:24'),
+(6, 79, 1, NULL, '2026-11-12 03:03:24'),
+(6, 95, 1, NULL, '2026-11-12 18:50:30'),
+(7, 94, 1, NULL, '2026-11-12 18:50:30');
 
 -- --------------------------------------------------------
 
@@ -670,6 +1227,27 @@ CREATE TABLE `solicitud_invitado` (
   `descripcion` text NOT NULL,
   `estado` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0 pendiente, 1 aprobada, 3 rechazada',
   `fecha` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `solicitud_permiso`
+--
+
+CREATE TABLE `solicitud_permiso` (
+  `id_solicitud_permiso` bigint(20) UNSIGNED NOT NULL,
+  `id_usuario` int(11) NOT NULL,
+  `id_permiso` int(10) UNSIGNED NOT NULL,
+  `motivo` text NOT NULL,
+  `tipo_duracion` enum('TEMPORAL','PERMANENTE') NOT NULL DEFAULT 'TEMPORAL',
+  `fecha_inicio` datetime NOT NULL DEFAULT current_timestamp(),
+  `fecha_fin` datetime DEFAULT NULL,
+  `estado` enum('PENDIENTE','APROBADA','RECHAZADA','CANCELADA') NOT NULL DEFAULT 'PENDIENTE',
+  `id_resolutor` int(11) DEFAULT NULL,
+  `motivo_resolucion` text DEFAULT NULL,
+  `fecha_resolucion` datetime DEFAULT NULL,
+  `creado_en` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -745,6 +1323,29 @@ INSERT INTO `usuario` (`id_usuario`, `nombre`, `apellido`, `dni`, `email`, `pass
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `usuario_permiso`
+--
+
+CREATE TABLE `usuario_permiso` (
+  `id_usuario_permiso` bigint(20) UNSIGNED NOT NULL,
+  `id_usuario` int(11) NOT NULL,
+  `id_permiso` int(10) UNSIGNED NOT NULL,
+  `efecto` enum('CONCEDER','DENEGAR') NOT NULL,
+  `origen` enum('SOLICITUD','DIRECTIVO','ROOT','MIGRACION') NOT NULL DEFAULT 'SOLICITUD',
+  `fecha_inicio` datetime NOT NULL DEFAULT current_timestamp(),
+  `fecha_fin` datetime DEFAULT NULL,
+  `estado` enum('ACTIVO','REVOCADO') NOT NULL DEFAULT 'ACTIVO',
+  `motivo` text NOT NULL,
+  `otorgado_por` int(11) DEFAULT NULL,
+  `id_solicitud_permiso` bigint(20) UNSIGNED DEFAULT NULL,
+  `creado_en` timestamp NOT NULL DEFAULT current_timestamp(),
+  `revocado_en` datetime DEFAULT NULL,
+  `revocado_por` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `usuario_rol`
 --
 
@@ -811,6 +1412,48 @@ INSERT INTO `version_plan` (`id_version`, `id_plan`, `nro_version`, `estado`, `v
 --
 
 --
+-- Indices de la tabla `alumno_actuacion`
+--
+ALTER TABLE `alumno_actuacion`
+  ADD PRIMARY KEY (`id_actuacion`),
+  ADD KEY `idx_alumno_actuacion_usuario` (`id_usuario`);
+
+--
+-- Indices de la tabla `alumno_egreso`
+--
+ALTER TABLE `alumno_egreso`
+  ADD PRIMARY KEY (`id_egreso`),
+  ADD UNIQUE KEY `uq_alumno_egreso` (`id_usuario`),
+  ADD KEY `fk_alumno_egreso_plan` (`id_plan`);
+
+--
+-- Indices de la tabla `alumno_inscripcion`
+--
+ALTER TABLE `alumno_inscripcion`
+  ADD PRIMARY KEY (`id_inscripcion`),
+  ADD KEY `idx_alumno_inscripcion_ciclo` (`id_usuario`,`anio_lectivo`,`fecha_inicio`),
+  ADD KEY `idx_alumno_inscripcion_curso` (`id_curso`,`anio_lectivo`);
+
+--
+-- Indices de la tabla `alumno_trayectoria`
+--
+ALTER TABLE `alumno_trayectoria`
+  ADD PRIMARY KEY (`id_movimiento`),
+  ADD KEY `idx_alumno_trayectoria_usuario` (`id_usuario`),
+  ADD KEY `idx_alumno_trayectoria_fecha` (`fecha_efectiva`),
+  ADD KEY `fk_alumno_trayectoria_curso_origen` (`id_curso_origen`),
+  ADD KEY `fk_alumno_trayectoria_curso_destino` (`id_curso_destino`);
+
+--
+-- Indices de la tabla `alumno_tutor`
+--
+ALTER TABLE `alumno_tutor`
+  ADD PRIMARY KEY (`id_alumno_tutor`),
+  ADD UNIQUE KEY `uq_alumno_tutor_activo` (`id_alumno`,`id_tutor`),
+  ADD KEY `idx_alumno_tutor_tutor` (`id_tutor`,`activo`),
+  ADD KEY `fk_alumno_tutor_creador` (`creado_por`);
+
+--
 -- Indices de la tabla `asistencia`
 --
 ALTER TABLE `asistencia`
@@ -830,6 +1473,16 @@ ALTER TABLE `asistencia_detalle`
   ADD KEY `id_asistencia` (`id_asistencia`),
   ADD KEY `id_rol_usuario` (`id_rol_usuario`),
   ADD KEY `idx_asistencia_responsable` (`id_usuario_responsable`);
+
+--
+-- Indices de la tabla `auditoria_permiso`
+--
+ALTER TABLE `auditoria_permiso`
+  ADD PRIMARY KEY (`id_auditoria`),
+  ADD KEY `idx_auditoria_permiso_fecha` (`fecha`),
+  ADD KEY `idx_auditoria_permiso_usuario` (`id_usuario_afectado`,`fecha`),
+  ADD KEY `fk_auditoria_permiso_permiso` (`id_permiso`),
+  ADD KEY `fk_auditoria_permiso_actor` (`id_actor`);
 
 --
 -- Indices de la tabla `aula_login_attempts`
@@ -920,6 +1573,21 @@ ALTER TABLE `faltas`
   ADD KEY `id_asistencia` (`id_asistencia`);
 
 --
+-- Indices de la tabla `gestion_auditoria`
+--
+ALTER TABLE `gestion_auditoria`
+  ADD PRIMARY KEY (`id_evento`),
+  ADD KEY `idx_gestion_auditoria_entidad` (`dominio`,`entidad`,`entidad_id`),
+  ADD KEY `idx_gestion_auditoria_actor` (`id_actor`);
+
+--
+-- Indices de la tabla `gestion_notificacion`
+--
+ALTER TABLE `gestion_notificacion`
+  ADD PRIMARY KEY (`id_notificacion`),
+  ADD KEY `idx_gestion_notificacion_destino` (`id_usuario_destino`,`leida_en`);
+
+--
 -- Indices de la tabla `horarios`
 --
 ALTER TABLE `horarios`
@@ -953,6 +1621,56 @@ ALTER TABLE `notas_modificadas`
 --
 ALTER TABLE `orientacion`
   ADD PRIMARY KEY (`id_orientacion`);
+
+--
+-- Indices de la tabla `permiso`
+--
+ALTER TABLE `permiso`
+  ADD PRIMARY KEY (`id_permiso`),
+  ADD UNIQUE KEY `uq_permiso_codigo` (`codigo`),
+  ADD KEY `idx_permiso_modulo_activo` (`modulo`,`activo`);
+
+--
+-- Indices de la tabla `personal_cargo`
+--
+ALTER TABLE `personal_cargo`
+  ADD PRIMARY KEY (`id_cargo`),
+  ADD UNIQUE KEY `uq_personal_cargo_codigo` (`codigo`);
+
+--
+-- Indices de la tabla `personal_cobertura`
+--
+ALTER TABLE `personal_cobertura`
+  ADD PRIMARY KEY (`id_cobertura`),
+  ADD KEY `idx_cobertura_origen` (`id_designacion_origen`),
+  ADD KEY `idx_cobertura_reemplazo` (`id_designacion_cobertura`),
+  ADD KEY `idx_cobertura_asignacion` (`id_asignacion_docente`),
+  ADD KEY `idx_cobertura_horario` (`id_curso_horario`);
+
+--
+-- Indices de la tabla `personal_designacion`
+--
+ALTER TABLE `personal_designacion`
+  ADD PRIMARY KEY (`id_designacion`),
+  ADD KEY `idx_designacion_vinculo` (`id_vinculo`),
+  ADD KEY `idx_designacion_cargo` (`id_cargo`);
+
+--
+-- Indices de la tabla `personal_situacion`
+--
+ALTER TABLE `personal_situacion`
+  ADD PRIMARY KEY (`id_situacion`),
+  ADD KEY `idx_personal_situacion_vinculo` (`id_vinculo`),
+  ADD KEY `idx_personal_situacion_designacion` (`id_designacion`),
+  ADD KEY `idx_personal_situacion_fechas` (`fecha_inicio`,`fecha_fin_prevista`,`fecha_fin_real`);
+
+--
+-- Indices de la tabla `personal_vinculo`
+--
+ALTER TABLE `personal_vinculo`
+  ADD PRIMARY KEY (`id_vinculo`),
+  ADD KEY `idx_personal_vinculo_usuario` (`id_usuario`),
+  ADD KEY `idx_personal_vinculo_vigencia` (`fecha_inicio`,`fecha_fin`);
 
 --
 -- Indices de la tabla `plan_estudio`
@@ -990,6 +1708,14 @@ ALTER TABLE `rol`
   ADD PRIMARY KEY (`id_rol`);
 
 --
+-- Indices de la tabla `rol_permiso`
+--
+ALTER TABLE `rol_permiso`
+  ADD PRIMARY KEY (`id_rol`,`id_permiso`),
+  ADD KEY `fk_rol_permiso_permiso` (`id_permiso`),
+  ADD KEY `fk_rol_permiso_actor` (`actualizado_por`);
+
+--
 -- Indices de la tabla `solicitud`
 --
 ALTER TABLE `solicitud`
@@ -1009,6 +1735,16 @@ ALTER TABLE `solicitud_invitado`
   ADD KEY `idx_solicitud_invitado_estado_fecha` (`estado`,`fecha`);
 
 --
+-- Indices de la tabla `solicitud_permiso`
+--
+ALTER TABLE `solicitud_permiso`
+  ADD PRIMARY KEY (`id_solicitud_permiso`),
+  ADD KEY `idx_solicitud_permiso_estado_fecha` (`estado`,`creado_en`),
+  ADD KEY `idx_solicitud_permiso_usuario` (`id_usuario`,`estado`),
+  ADD KEY `fk_solicitud_permiso_permiso` (`id_permiso`),
+  ADD KEY `fk_solicitud_permiso_resolutor` (`id_resolutor`);
+
+--
 -- Indices de la tabla `tipo_nota`
 --
 ALTER TABLE `tipo_nota`
@@ -1021,6 +1757,18 @@ ALTER TABLE `usuario`
   ADD PRIMARY KEY (`id_usuario`),
   ADD UNIQUE KEY `uq_usuario_dni` (`dni`),
   ADD KEY `idx_usuario_id_rol` (`id_rol`);
+
+--
+-- Indices de la tabla `usuario_permiso`
+--
+ALTER TABLE `usuario_permiso`
+  ADD PRIMARY KEY (`id_usuario_permiso`),
+  ADD KEY `idx_usuario_permiso_efectivo` (`id_usuario`,`id_permiso`,`estado`,`fecha_inicio`,`fecha_fin`),
+  ADD KEY `idx_usuario_permiso_vencimiento` (`estado`,`fecha_fin`),
+  ADD KEY `fk_usuario_permiso_permiso` (`id_permiso`),
+  ADD KEY `fk_usuario_permiso_otorgante` (`otorgado_por`),
+  ADD KEY `fk_usuario_permiso_solicitud` (`id_solicitud_permiso`),
+  ADD KEY `fk_usuario_permiso_revocador` (`revocado_por`);
 
 --
 -- Indices de la tabla `usuario_rol`
@@ -1044,6 +1792,36 @@ ALTER TABLE `version_plan`
 --
 
 --
+-- AUTO_INCREMENT de la tabla `alumno_actuacion`
+--
+ALTER TABLE `alumno_actuacion`
+  MODIFY `id_actuacion` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `alumno_egreso`
+--
+ALTER TABLE `alumno_egreso`
+  MODIFY `id_egreso` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `alumno_inscripcion`
+--
+ALTER TABLE `alumno_inscripcion`
+  MODIFY `id_inscripcion` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+
+--
+-- AUTO_INCREMENT de la tabla `alumno_trayectoria`
+--
+ALTER TABLE `alumno_trayectoria`
+  MODIFY `id_movimiento` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+
+--
+-- AUTO_INCREMENT de la tabla `alumno_tutor`
+--
+ALTER TABLE `alumno_tutor`
+  MODIFY `id_alumno_tutor` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `asistencia`
 --
 ALTER TABLE `asistencia`
@@ -1054,6 +1832,12 @@ ALTER TABLE `asistencia`
 --
 ALTER TABLE `asistencia_detalle`
   MODIFY `id_detalle` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `auditoria_permiso`
+--
+ALTER TABLE `auditoria_permiso`
+  MODIFY `id_auditoria` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `carga_notas`
@@ -1092,6 +1876,18 @@ ALTER TABLE `estados_asistencia`
   MODIFY `id_estado` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT de la tabla `gestion_auditoria`
+--
+ALTER TABLE `gestion_auditoria`
+  MODIFY `id_evento` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `gestion_notificacion`
+--
+ALTER TABLE `gestion_notificacion`
+  MODIFY `id_notificacion` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `horarios`
 --
 ALTER TABLE `horarios`
@@ -1116,6 +1912,42 @@ ALTER TABLE `orientacion`
   MODIFY `id_orientacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
+-- AUTO_INCREMENT de la tabla `permiso`
+--
+ALTER TABLE `permiso`
+  MODIFY `id_permiso` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=96;
+
+--
+-- AUTO_INCREMENT de la tabla `personal_cargo`
+--
+ALTER TABLE `personal_cargo`
+  MODIFY `id_cargo` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT de la tabla `personal_cobertura`
+--
+ALTER TABLE `personal_cobertura`
+  MODIFY `id_cobertura` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `personal_designacion`
+--
+ALTER TABLE `personal_designacion`
+  MODIFY `id_designacion` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `personal_situacion`
+--
+ALTER TABLE `personal_situacion`
+  MODIFY `id_situacion` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `personal_vinculo`
+--
+ALTER TABLE `personal_vinculo`
+  MODIFY `id_vinculo` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT de la tabla `plan_estudio`
 --
 ALTER TABLE `plan_estudio`
@@ -1134,6 +1966,18 @@ ALTER TABLE `solicitud_invitado`
   MODIFY `id_solicitud` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `solicitud_permiso`
+--
+ALTER TABLE `solicitud_permiso`
+  MODIFY `id_solicitud_permiso` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `usuario_permiso`
+--
+ALTER TABLE `usuario_permiso`
+  MODIFY `id_usuario_permiso` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `usuario_rol`
 --
 ALTER TABLE `usuario_rol`
@@ -1150,6 +1994,42 @@ ALTER TABLE `version_plan`
 --
 
 --
+-- Filtros para la tabla `alumno_actuacion`
+--
+ALTER TABLE `alumno_actuacion`
+  ADD CONSTRAINT `fk_alumno_actuacion_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`) ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `alumno_egreso`
+--
+ALTER TABLE `alumno_egreso`
+  ADD CONSTRAINT `fk_alumno_egreso_plan` FOREIGN KEY (`id_plan`) REFERENCES `plan_estudio` (`id_plan`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_alumno_egreso_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`) ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `alumno_inscripcion`
+--
+ALTER TABLE `alumno_inscripcion`
+  ADD CONSTRAINT `fk_alumno_inscripcion_curso` FOREIGN KEY (`id_curso`) REFERENCES `curso` (`id_curso`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_alumno_inscripcion_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`) ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `alumno_trayectoria`
+--
+ALTER TABLE `alumno_trayectoria`
+  ADD CONSTRAINT `fk_alumno_trayectoria_curso_destino` FOREIGN KEY (`id_curso_destino`) REFERENCES `curso` (`id_curso`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_alumno_trayectoria_curso_origen` FOREIGN KEY (`id_curso_origen`) REFERENCES `curso` (`id_curso`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_alumno_trayectoria_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`) ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `alumno_tutor`
+--
+ALTER TABLE `alumno_tutor`
+  ADD CONSTRAINT `fk_alumno_tutor_alumno` FOREIGN KEY (`id_alumno`) REFERENCES `usuario` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_alumno_tutor_creador` FOREIGN KEY (`creado_por`) REFERENCES `usuario` (`id_usuario`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_alumno_tutor_tutor` FOREIGN KEY (`id_tutor`) REFERENCES `usuario` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Filtros para la tabla `asistencia`
 --
 ALTER TABLE `asistencia`
@@ -1162,6 +2042,14 @@ ALTER TABLE `asistencia_detalle`
   ADD CONSTRAINT `asistencia_detalle_ibfk_2` FOREIGN KEY (`id_asistencia`) REFERENCES `asistencia` (`id_asistencia`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_asistencia_detalle_estado` FOREIGN KEY (`id_estado`) REFERENCES `estados_asistencia` (`id_estado`) ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_asistencia_responsable_usuario` FOREIGN KEY (`id_usuario_responsable`) REFERENCES `usuario` (`id_usuario`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `auditoria_permiso`
+--
+ALTER TABLE `auditoria_permiso`
+  ADD CONSTRAINT `fk_auditoria_permiso_actor` FOREIGN KEY (`id_actor`) REFERENCES `usuario` (`id_usuario`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_auditoria_permiso_afectado` FOREIGN KEY (`id_usuario_afectado`) REFERENCES `usuario` (`id_usuario`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_auditoria_permiso_permiso` FOREIGN KEY (`id_permiso`) REFERENCES `permiso` (`id_permiso`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `carga_notas`
@@ -1215,6 +2103,12 @@ ALTER TABLE `faltas`
   ADD CONSTRAINT `faltas_ibfk_3` FOREIGN KEY (`id_asistencia`) REFERENCES `asistencia` (`id_asistencia`);
 
 --
+-- Filtros para la tabla `gestion_notificacion`
+--
+ALTER TABLE `gestion_notificacion`
+  ADD CONSTRAINT `fk_gestion_notificacion_usuario` FOREIGN KEY (`id_usuario_destino`) REFERENCES `usuario` (`id_usuario`) ON UPDATE CASCADE;
+
+--
 -- Filtros para la tabla `horas`
 --
 ALTER TABLE `horas`
@@ -1233,6 +2127,35 @@ ALTER TABLE `materia`
 --
 ALTER TABLE `notas_modificadas`
   ADD CONSTRAINT `notas_modificadas_ibfk_1` FOREIGN KEY (`id_nota`) REFERENCES `carga_notas` (`id_nota`);
+
+--
+-- Filtros para la tabla `personal_cobertura`
+--
+ALTER TABLE `personal_cobertura`
+  ADD CONSTRAINT `fk_cobertura_asignacion` FOREIGN KEY (`id_asignacion_docente`) REFERENCES `docente_curso_materia` (`id_asignacion`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_cobertura_horario` FOREIGN KEY (`id_curso_horario`) REFERENCES `curso_horario` (`id_curso_horario`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_cobertura_origen` FOREIGN KEY (`id_designacion_origen`) REFERENCES `personal_designacion` (`id_designacion`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_cobertura_reemplazo` FOREIGN KEY (`id_designacion_cobertura`) REFERENCES `personal_designacion` (`id_designacion`) ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `personal_designacion`
+--
+ALTER TABLE `personal_designacion`
+  ADD CONSTRAINT `fk_designacion_cargo` FOREIGN KEY (`id_cargo`) REFERENCES `personal_cargo` (`id_cargo`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_designacion_vinculo` FOREIGN KEY (`id_vinculo`) REFERENCES `personal_vinculo` (`id_vinculo`) ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `personal_situacion`
+--
+ALTER TABLE `personal_situacion`
+  ADD CONSTRAINT `fk_personal_situacion_designacion` FOREIGN KEY (`id_designacion`) REFERENCES `personal_designacion` (`id_designacion`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_personal_situacion_vinculo` FOREIGN KEY (`id_vinculo`) REFERENCES `personal_vinculo` (`id_vinculo`) ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `personal_vinculo`
+--
+ALTER TABLE `personal_vinculo`
+  ADD CONSTRAINT `fk_personal_vinculo_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`) ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `plan_estudio`
@@ -1255,6 +2178,14 @@ ALTER TABLE `previa`
   ADD CONSTRAINT `previa_ibfk_1` FOREIGN KEY (`id_materia`) REFERENCES `materia` (`id_materia`);
 
 --
+-- Filtros para la tabla `rol_permiso`
+--
+ALTER TABLE `rol_permiso`
+  ADD CONSTRAINT `fk_rol_permiso_actor` FOREIGN KEY (`actualizado_por`) REFERENCES `usuario` (`id_usuario`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_rol_permiso_permiso` FOREIGN KEY (`id_permiso`) REFERENCES `permiso` (`id_permiso`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_rol_permiso_rol` FOREIGN KEY (`id_rol`) REFERENCES `rol` (`id_rol`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Filtros para la tabla `solicitud`
 --
 ALTER TABLE `solicitud`
@@ -1268,10 +2199,28 @@ ALTER TABLE `solicitud_invitado`
   ADD CONSTRAINT `fk_solicitud_invitado_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Filtros para la tabla `solicitud_permiso`
+--
+ALTER TABLE `solicitud_permiso`
+  ADD CONSTRAINT `fk_solicitud_permiso_permiso` FOREIGN KEY (`id_permiso`) REFERENCES `permiso` (`id_permiso`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_solicitud_permiso_resolutor` FOREIGN KEY (`id_resolutor`) REFERENCES `usuario` (`id_usuario`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_solicitud_permiso_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Filtros para la tabla `usuario`
 --
 ALTER TABLE `usuario`
   ADD CONSTRAINT `fk_usuario_rol_principal` FOREIGN KEY (`id_rol`) REFERENCES `rol` (`id_rol`) ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `usuario_permiso`
+--
+ALTER TABLE `usuario_permiso`
+  ADD CONSTRAINT `fk_usuario_permiso_otorgante` FOREIGN KEY (`otorgado_por`) REFERENCES `usuario` (`id_usuario`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_usuario_permiso_permiso` FOREIGN KEY (`id_permiso`) REFERENCES `permiso` (`id_permiso`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_usuario_permiso_revocador` FOREIGN KEY (`revocado_por`) REFERENCES `usuario` (`id_usuario`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_usuario_permiso_solicitud` FOREIGN KEY (`id_solicitud_permiso`) REFERENCES `solicitud_permiso` (`id_solicitud_permiso`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_usuario_permiso_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `usuario_rol`
