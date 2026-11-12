@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 11-11-2026 a las 02:04:14
+-- Tiempo de generación: 12-11-2026 a las 01:35:02
 -- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.0.30
+-- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -420,18 +420,19 @@ CREATE TABLE `materia` (
   `especialidad` varchar(100) DEFAULT NULL,
   `id_plan` int(11) DEFAULT NULL,
   `anio_materia` int(11) DEFAULT NULL,
-  `carga_horaria_semanal` int(11) DEFAULT NULL
+  `carga_horaria_semanal` int(11) DEFAULT NULL,
+  `Contenidos` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `materia`
 --
 
-INSERT INTO `materia` (`id_materia`, `nombre`, `id_horas`, `especialidad`, `id_plan`, `anio_materia`, `carga_horaria_semanal`) VALUES
-(1, 'Programacion Web', 1, 'informatica', 1, 7, 4),
-(2, 'Bases de Datos', 2, 'informatica', 1, 7, 4),
-(3, 'Sistemas Operativos', 3, 'informatica', 1, 7, 4),
-(4, 'Redes y Comunicaciones', 4, 'informatica', 1, 7, 4);
+INSERT INTO `materia` (`id_materia`, `nombre`, `id_horas`, `especialidad`, `id_plan`, `anio_materia`, `carga_horaria_semanal`, `Contenidos`) VALUES
+(1, 'Programacion Web', 1, 'informatica', 1, 7, 4, NULL),
+(2, 'Bases de Datos', 2, 'informatica', 1, 7, 4, NULL),
+(3, 'Sistemas Operativos', 3, 'informatica', 1, 7, 4, NULL),
+(4, 'Redes y Comunicaciones', 4, 'informatica', 1, 7, 4, NULL);
 
 -- --------------------------------------------------------
 
@@ -541,6 +542,24 @@ INSERT INTO `plan_estudio` (`id_plan`, `nombre`, `id_orientacion`, `id_regimen`,
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `plan_regimen_evaluacion`
+--
+
+CREATE TABLE `plan_regimen_evaluacion` (
+  `id_plan` int(11) NOT NULL,
+  `id_regimen` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `plan_regimen_evaluacion`
+--
+
+INSERT INTO `plan_regimen_evaluacion` (`id_plan`, `id_regimen`) VALUES
+(1, 1);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `previa`
 --
 
@@ -558,6 +577,7 @@ CREATE TABLE `previa` (
 
 CREATE TABLE `regimen_evaluacion` (
   `id_regimen` int(11) NOT NULL,
+  `nombre` varchar(100) DEFAULT NULL,
   `tipo_calificacion` enum('text','int') NOT NULL,
   `nota_minima` int(11) NOT NULL,
   `escala_numerica` int(11) NOT NULL
@@ -567,8 +587,10 @@ CREATE TABLE `regimen_evaluacion` (
 -- Volcado de datos para la tabla `regimen_evaluacion`
 --
 
-INSERT INTO `regimen_evaluacion` (`id_regimen`, `tipo_calificacion`, `nota_minima`, `escala_numerica`) VALUES
-(1, 'int', 1, 10);
+INSERT INTO `regimen_evaluacion` (`id_regimen`, `nombre`, `tipo_calificacion`, `nota_minima`, `escala_numerica`) VALUES
+(1, 'Estándar (Escala 1 a 10)', 'int', 1, 10),
+(2, 'RITE (TEA, TEP, TED)', 'text', 1, 3),
+(3, 'Estándar y RITE (TEA, TEP, TED)', 'text', 1, 10);
 
 -- --------------------------------------------------------
 
@@ -941,6 +963,13 @@ ALTER TABLE `plan_estudio`
   ADD KEY `fk_plan_orientacion` (`id_orientacion`);
 
 --
+-- Indices de la tabla `plan_regimen_evaluacion`
+--
+ALTER TABLE `plan_regimen_evaluacion`
+  ADD PRIMARY KEY (`id_plan`,`id_regimen`),
+  ADD KEY `fk_pre_regimen` (`id_regimen`);
+
+--
 -- Indices de la tabla `previa`
 --
 ALTER TABLE `previa`
@@ -1048,7 +1077,7 @@ ALTER TABLE `curso_horario`
 -- AUTO_INCREMENT de la tabla `detalle_plan`
 --
 ALTER TABLE `detalle_plan`
-  MODIFY `id_detalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_detalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `docente_curso_materia`
@@ -1072,7 +1101,7 @@ ALTER TABLE `horarios`
 -- AUTO_INCREMENT de la tabla `materia`
 --
 ALTER TABLE `materia`
-  MODIFY `id_materia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_materia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `notas_modificadas`
@@ -1090,7 +1119,7 @@ ALTER TABLE `orientacion`
 -- AUTO_INCREMENT de la tabla `plan_estudio`
 --
 ALTER TABLE `plan_estudio`
-  MODIFY `id_plan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_plan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `solicitud`
@@ -1114,7 +1143,7 @@ ALTER TABLE `usuario_rol`
 -- AUTO_INCREMENT de la tabla `version_plan`
 --
 ALTER TABLE `version_plan`
-  MODIFY `id_version` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_version` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Restricciones para tablas volcadas
@@ -1211,6 +1240,13 @@ ALTER TABLE `notas_modificadas`
 ALTER TABLE `plan_estudio`
   ADD CONSTRAINT `fk_plan_orientacion` FOREIGN KEY (`id_orientacion`) REFERENCES `orientacion` (`id_orientacion`),
   ADD CONSTRAINT `plan_estudio_ibfk_1` FOREIGN KEY (`id_regimen`) REFERENCES `regimen_evaluacion` (`id_regimen`);
+
+--
+-- Filtros para la tabla `plan_regimen_evaluacion`
+--
+ALTER TABLE `plan_regimen_evaluacion`
+  ADD CONSTRAINT `fk_pre_plan` FOREIGN KEY (`id_plan`) REFERENCES `plan_estudio` (`id_plan`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_pre_regimen` FOREIGN KEY (`id_regimen`) REFERENCES `regimen_evaluacion` (`id_regimen`);
 
 --
 -- Filtros para la tabla `previa`
